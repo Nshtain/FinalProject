@@ -16,7 +16,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import kolesnick.SummaryTask.Path;
 import kolesnick.SummaryTask.db.Role;
@@ -24,13 +25,10 @@ import kolesnick.SummaryTask.db.Role;
 /**
  * Security filter. Disabled by default. Uncomment Security filter
  * section in web.xml to enable.
- * 
- * @author D.Kolesnikov
- * 
  */
 public class CommandAccessFilter implements Filter {
 	
-	private static final Logger LOG = Logger.getLogger(CommandAccessFilter.class);
+	private static final Logger LOG = LogManager.getLogger(CommandAccessFilter.class);
 
 	// commands access	
 	private Map<Role, List<String>> accessMap = new HashMap<Role, List<String>>();
@@ -88,10 +86,18 @@ public class CommandAccessFilter implements Filter {
 
 	public void init(FilterConfig fConfig) throws ServletException {
 		LOG.debug("Filter initialization starts");
-		
+			
 		// roles
 		accessMap.put(Role.ADMIN, asList(fConfig.getInitParameter("admin")));
+		accessMap.get(Role.ADMIN).add("addNewCar");
 		accessMap.put(Role.CLIENT, asList(fConfig.getInitParameter("client")));
+		accessMap.get(Role.CLIENT).add("registration");
+		accessMap.get(Role.CLIENT).add("makeOrder");
+		accessMap.get(Role.CLIENT).add("userContract");
+		accessMap.get(Role.CLIENT).add("payBill");
+		accessMap.get(Role.CLIENT).add("showBill");
+
+
 		LOG.trace("Access map --> " + accessMap);
 
 		// commons
@@ -100,6 +106,9 @@ public class CommandAccessFilter implements Filter {
 
 		// out of control
 		outOfControl = asList(fConfig.getInitParameter("out-of-control"));
+		outOfControl.add("listCars");
+		outOfControl.add("checkMakeOrder");
+		outOfControl.add("viewSettings");
 		LOG.trace("Out of control commands --> " + outOfControl);
 		
 		LOG.debug("Filter initialization finished");

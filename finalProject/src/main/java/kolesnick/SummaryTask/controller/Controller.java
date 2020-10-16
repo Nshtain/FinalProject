@@ -1,4 +1,4 @@
-package controller;
+package kolesnick.SummaryTask.controller;
 
 import java.io.IOException;
 
@@ -10,10 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.mysql.cj.Session;
-
 import kolesnick.SummaryTask.Path;
-import kolesnick.SummaryTask.exception.AppException;
+import kolesnick.SummaryTask.exception.DBException;
 import kolesnick.SummaryTask.web.command.Command;
 import kolesnick.SummaryTask.web.command.CommandContainer;
 
@@ -24,7 +22,7 @@ public class Controller extends HttpServlet {
 	
 	private static final long serialVersionUID = 2423353715955164816L;
 
-	private static final Logger LOG = LogManager.getLogger();
+	private static final Logger LOG = LogManager.getLogger(Controller.class);
 	
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -43,7 +41,7 @@ public class Controller extends HttpServlet {
 		String forward = Path.PAGE_ERROR_PAGE;
 		try {
 			forward = command.execute(request, response);
-		} catch (DBExeption ex) {
+		} catch (DBException ex) {
 			request.setAttribute("errorMessage", ex.getMessage());
 		}
 		LOG.trace("Forward address --> " + forward);
@@ -68,10 +66,10 @@ public class Controller extends HttpServlet {
 		LOG.trace("Obtained command --> " + command);
 
 		// execute command and get forward address
-		String redirect = Path.PAGE_ERROR_PAGE;
+		String redirect = request.getContextPath() + Path.PAGE_ERROR_PAGE;
 		try {
-			redirect = command.execute(request, response);
-		} catch (DBExeption ex) {
+			redirect = request.getContextPath() + command.execute(request, response);
+		} catch (DBException ex) {
 			request.getSession().setAttribute("errorMessage", ex.getMessage());
 		}
 		LOG.trace("Redirect address --> " + redirect);

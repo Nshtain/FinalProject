@@ -3,17 +3,15 @@ package kolesnick.SummaryTask.web.command;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Holder for all commands.<br/>
- * 
- * @author D.Kolesnikov
- * 
  */
 public class CommandContainer {
 	
-	private static final Logger LOG = Logger.getLogger(CommandContainer.class);
+	private static final Logger LOG = LogManager.getLogger();
 	
 	private static Map<String, Command> commands = new TreeMap<String, Command>();
 	
@@ -23,12 +21,21 @@ public class CommandContainer {
 		commands.put("logout", new LogoutCommand());
 		commands.put("viewSettings", new ViewSettingsCommand());
 		commands.put("noCommand", new NoCommand());
+		commands.put("checkMakeOrder", new CheckMakeOrderCommand());
+
 		
 		// client commands
-		commands.put("listMenu", new ListMenuCommand());
+		commands.put("listCars", new ListCarCommand());
+		commands.put("registration", new RegistrationCommand());
+		commands.put("makeOrder", new MakeOrderCommand());
+		commands.put("userContract", new UserContractCommand());
+		commands.put("payBill", new PayBillCommand());
+		commands.put("showBill", new ShowBillCommand());
 		
 		// admin commands
-		commands.put("listOrders", new ListOrdersCommand());
+		//commands.put("listOrders", new ListOrdersCommand());
+		commands.put("addNewCar", new CreateCarCommand());
+
 		
 		LOG.debug("Command container was successfully initialized");
 		LOG.trace("Number of commands --> " + commands.size());

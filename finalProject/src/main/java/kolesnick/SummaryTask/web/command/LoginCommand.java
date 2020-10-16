@@ -7,29 +7,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import kolesnick.SummaryTask.Path;
 import kolesnick.SummaryTask.db.DBManager;
 import kolesnick.SummaryTask.db.Role;
 import kolesnick.SummaryTask.db.entity.User;
-import kolesnick.SummaryTask.exception.AppException;
+import kolesnick.SummaryTask.exception.DBException;
 
 /**
  * Login command.
- * 
- * @author D.Kolesnikov
- * 
  */
 public class LoginCommand extends Command {
 
 	private static final long serialVersionUID = -3071536593627692473L;
 
-	private static final Logger LOG = Logger.getLogger(LoginCommand.class);
+	private static final Logger LOG = LogManager.getLogger(LoginCommand.class);
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) 
-			throws IOException, ServletException, AppException {
+			throws IOException, ServletException, DBException {
 		LOG.debug("Command starts");
 
 		HttpSession session = request.getSession();
@@ -41,14 +38,14 @@ public class LoginCommand extends Command {
 
 		String password = request.getParameter("password");
 		if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
-			throw new AppException("Login/password cannot be empty");
+			throw new DBException("Login/password cannot be empty");
 		}
 
 		User user = manager.findUserByLogin(login);
 		LOG.trace("Found in DB: user --> " + user);
 
 		if (user == null || !password.equals(user.getPassword())) {
-			throw new AppException("Cannot find user with such login/password");
+			throw new DBException("Cannot find user with such login/password");
 		}
 
 		Role userRole = Role.getRole(user);
@@ -57,11 +54,15 @@ public class LoginCommand extends Command {
 		String forward = Path.PAGE_ERROR_PAGE;
 
 		if (userRole == Role.ADMIN) {
+			forward = Path.PAGE_CREATE_CAR;
+		}
+		
+		if (userRole == Role.MANAGER) {
 			forward = Path.COMMAND_LIST_ORDERS;
 		}
 
 		if (userRole == Role.CLIENT) {
-			forward = Path.COMMAND_LIST_MENU;
+			forward = Path.COMMAND_LIST_CARS;
 		}
 
 		session.setAttribute("user", user);

@@ -1,10 +1,9 @@
 package kolesnick.SummaryTask.exception;
 
+import org.apache.logging.log4j.Marker;
+
 /**
  * Holder for messages of exceptions.
- * 
- * @author Dmytro_Kolesnikov
- *
  */
 public class Messages {
 
@@ -18,7 +17,7 @@ public class Messages {
 
 	public static final String ERR_CANNOT_OBTAIN_CATEGORIES = "Cannot obtain categories";
 
-	public static final String ERR_CANNOT_OBTAIN_MENU_ITEMS = "Cannot obtain menu items";
+	public static final String ERR_CANNOT_OBTAIN_CARS = "Cannot obtain cars";
 
 	public static final String ERR_CANNOT_OBTAIN_MENU_ITEMS_BY_ORDER = "Cannot obtain menu items by order";
 
@@ -45,5 +44,17 @@ public class Messages {
 	public static final String ERR_CANNOT_CLOSE_STATEMENT = "Cannot close a statement";
 
 	public static final String ERR_CANNOT_OBTAIN_DATA_SOURCE = "Cannot obtain the data source";
+
+	public static final String ERR_CANNOT_CREATE_CAR = "Cannot create car";
+
+	public static final String ERR_CANNOT_CREATE_CONTRACT = "Cannot create contract";
+
+	public static final String ERR_CANNOT_OBTAIN_CONTRACT = "Cannot obtain contract";
+
+	public static final String ERR_CANNOT_OBTAIN_CAR = "Cannot obtain car";
+
+	public static final String ERR_CANNOT_UPDATE_CONTRACT = "Cannot update contract";
+
+	public static final String ERR_CANNOT_CREATE_BILL = "Cannot create bill";
 	
 }

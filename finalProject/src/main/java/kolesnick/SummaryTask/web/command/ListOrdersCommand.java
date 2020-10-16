@@ -10,34 +10,29 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import kolesnick.SummaryTask.Path;
 import kolesnick.SummaryTask.db.DBManager;
-import kolesnick.SummaryTask.db.bean.UserOrderBean;
-import kolesnick.SummaryTask.exception.AppException;
+import kolesnick.SummaryTask.exception.DBException;
 
 /**
  * Lists orders.
- * 
- * @author D.Kolesnikov
- * 
  */
-public class ListOrdersCommand extends Command {
+public abstract class ListOrdersCommand extends Command {
 
 	private static final long serialVersionUID = 1863978254689586513L;
 	
-	private static final Logger LOG = Logger.getLogger(ListOrdersCommand.class);
+	private static final Logger LOG = LogManager.getLogger(ListOrdersCommand.class);
 	
 	/**
 	 * Serializable comparator used with TreeMap container. When the servlet
 	 * container tries to serialize the session it may fail because the session
 	 * can contain TreeMap object with not serializable comparator.
 	 * 
-	 * @author D.Kolesnikov
-	 * 
 	 */
-	private static class CompareById implements Comparator<UserOrderBean>, Serializable {
+	/*private static class CompareById implements Comparator<UserOrderBean>, Serializable {
 		private static final long serialVersionUID = -1573481565177573283L;
 
 		public int compare(UserOrderBean bean1, UserOrderBean bean2) {
@@ -53,7 +48,7 @@ public class ListOrdersCommand extends Command {
 			
 	@Override
 	public String execute(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ServletException, AppException {
+			HttpServletResponse response) throws IOException, ServletException, DBException {
 		LOG.debug("Commands starts");
 				
 		List<UserOrderBean> userOrderBeanList = DBManager.getInstance().getUserOrderBeans();
@@ -68,5 +63,5 @@ public class ListOrdersCommand extends Command {
 		LOG.debug("Commands finished");
 		return Path.PAGE_LIST_ORDERS;
 	}
-
+*/
 }

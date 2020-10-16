@@ -16,22 +16,15 @@ import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.message.Message;
 
-import kolesnick.SummaryTask.db.bean.UserOrderBean;
-import kolesnick.SummaryTask.db.entity.Category;
-import kolesnick.SummaryTask.db.entity.MenuItem;
-import kolesnick.SummaryTask.db.entity.Order;
+import kolesnick.SummaryTask.db.entity.Bill;
+import kolesnick.SummaryTask.db.entity.Car;
+import kolesnick.SummaryTask.db.entity.Contract;
 import kolesnick.SummaryTask.db.entity.User;
 import kolesnick.SummaryTask.exception.DBException;
 import kolesnick.SummaryTask.exception.Messages;
 
-/**
- * DB manager. Works with Apache Derby DB. Only the required DAO methods are
- * defined!
- * 
- * @author D.Kolesnikov
- * 
- */
 public final class DBManager {
 
 	private static final Logger LOG = LogManager.getLogger();
@@ -67,33 +60,39 @@ public final class DBManager {
 	// SQL queries
 	// //////////////////////////////////////////////////////////
 
-	private static final String SQL_FIND_USER_BY_LOGIN = "SELECT * FROM users WHERE login=?";
+	private static final String SQL_FIND_USER_BY_LOGIN = "SELECT * FROM user WHERE login=?";
 
-	private static final String SQL_FIND_ALL_ORDERS = "SELECT * FROM orders";
+	private static final String SQL_FIND_ALL_CONTRACTS = "SELECT * FROM contract";
 
-	private static final String SQL_FIND_USER_BY_ID = "SELECT * FROM users WHERE id=?";
+	private static final String SQL_FIND_USER_BY_ID = "SELECT * FROM user WHERE id=?";
 
-	private static final String SQL_FIND_ALL_MENU_ITEMS = "SELECT * FROM menu";
+	private static final String SQL_FIND_ALL_CARS = "SELECT * FROM car";
+
+	private static final String SQL_FIND_CAR_BY_ID = "SELECT * FROM car WHERE id=?";
 
 	private static final String SQL_FIND_ORDERS_BY_STATUS_AND_USER = "SELECT * FROM orders WHERE status_id=? AND user_id=?";
 
-	private static final String SQL_FIND_MENU_ITEMS_BY_ORDER = "select * from menu where id in (select menu_id from orders_menu where order_id=?)";
+	private static final String SQL_CREATE_CONTRACT = "INSERT INTO `contract` (`rental_term`, `car_id`, `with_driver`, `user_id`, `status_id`) VALUES (?, ?, ?, ?, ?)";
 
 	private static final String SQL_FIND_ORDERS_BY_STATUS = "SELECT * FROM orders WHERE status_id=?";
 
-	private static final String SQL_FIND_ALL_CATEGORIES = "SELECT * FROM categories";
+	private static final String SQL_CREATE_CAR = "INSERT INTO `car` (`brand`, `model`, `type`, `color`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
-	private static final String SQL_UPDATE_USER = "UPDATE users SET password=?, first_name=?, last_name=?"
+	private static final String SQL_UPDATE_USER = "UPDATE user SET user_firstname=?, user_name=?, user_lastname=?, adress=?, pasport=?, tel=?"
 			+ "	WHERE id=?";
 
-	private static final String SQL_GET_USER_ORDER_BEANS = "SELECT o.id, u.first_name, u.last_name, o.bill, s.name"
-			+ "	FROM users u, orders o, statuses s"
-			+ "	WHERE o.user_id=u.id AND o.status_id=s.id";
+	private static final String SQL_FIND_CONTRACT_BY_USER = "SELECT * FROM contract WHERE user_id=?";
+
+	private static final String SQL_FIND_CONTRACT_BY_CONTRACT_ID = "SELECT * FROM contract WHERE id=?";
+
+	private static final String SQL_UPDATE_CONTRACT_STATUS_BY_CONTRACT_ID = "UPDATE contract SET status_id=? WHERE id=?";
+
+	private static final String SQL_CREATE_BILL = "INSERT INTO `bill` (`total_price`, `contract_id`) VALUES (?, ?);";
 
 	/**
-	 * Returns a DB connection from the Pool Connections. Before using this
-	 * method you must configure the Date Source and the Connections Pool in
-	 * your WEB_APP_ROOT/META-INF/context.xml file.
+	 * Returns a DB connection from the Pool Connections. Before using this method
+	 * you must configure the Date Source and the Connections Pool in your
+	 * WEB_APP_ROOT/META-INF/context.xml file.
 	 * 
 	 * @return DB connection.
 	 */
@@ -108,309 +107,109 @@ public final class DBManager {
 		return con;
 	}
 
-	// //////////////////////////////////////////////////////////s
-	// Methods to obtain beans
-	// //////////////////////////////////////////////////////////
-	/**
-	 * Returns all categories.
-	 * 
-	 * @return List of category entities.
-	 */
-	public List<UserOrderBean> getUserOrderBeans() throws DBException {
-		List<UserOrderBean> orderUserBeanList = new ArrayList<UserOrderBean>();
-		Statement stmt = null;
-		ResultSet rs = null;
-		Connection con = null;
-		try {
-			con = getConnection();
-			stmt = con.createStatement();
-			rs = stmt.executeQuery(SQL_GET_USER_ORDER_BEANS);
-			while (rs.next()) {
-				orderUserBeanList.add(extractUserOrderBean(rs));
-			}
-			con.commit();
-		} catch (SQLException ex) {
-			rollback(con);
-			LOG.error(Messages.ERR_CANNOT_OBTAIN_USER_ORDER_BEANS, ex);
-			throw new DBException(Messages.ERR_CANNOT_OBTAIN_USER_ORDER_BEANS, ex);
-		} finally {
-			close(con, stmt, rs);
-		}
-		return orderUserBeanList;
-	}
-
 	// //////////////////////////////////////////////////////////
 	// Entity access methods
 	// //////////////////////////////////////////////////////////
 
 	/**
-	 * Returns all categories.
+	 * Returns all cars.
 	 * 
-	 * @return List of category entities.
+	 * @return List of car entities.
 	 */
-	public List<Category> findCategories() throws DBException {
-		List<Category> categoriesList = new ArrayList<Category>();
-		Statement stmt = null;
-		ResultSet rs = null;
-		Connection con = null;
-		try {
-			con = getConnection();
-			stmt = con.createStatement();
-			rs = stmt.executeQuery(SQL_FIND_ALL_CATEGORIES);
-			while (rs.next()) {
-				categoriesList.add(extractCategory(rs));
-			}
-			con.commit();
-		} catch (SQLException ex) {
-			rollback(con);
-			LOG.error(Messages.ERR_CANNOT_OBTAIN_CATEGORIES, ex);
-			throw new DBException(Messages.ERR_CANNOT_OBTAIN_CATEGORIES, ex);
-		} finally {
-			close(con, stmt, rs);
-		}
-		return categoriesList;
-	}
-
-	/**
-	 * Returns all menu items.
-	 * 
-	 * @return List of menu item entities.
-	 */
-	public List<MenuItem> findMenuItems() throws DBException {
-		List<MenuItem> menuItemsList = new ArrayList<MenuItem>();
-		Statement stmt = null;
-		ResultSet rs = null;
-		Connection con = null;
-		try {
-			con = getConnection();
-			stmt = con.createStatement();
-			rs = stmt.executeQuery(SQL_FIND_ALL_MENU_ITEMS);
-			while (rs.next()) {
-				menuItemsList.add(extractMenuItem(rs));
-			}
-			con.commit();
-		} catch (SQLException ex) {
-			rollback(con);
-			LOG.error(Messages.ERR_CANNOT_OBTAIN_MENU_ITEMS, ex);
-			throw new DBException(Messages.ERR_CANNOT_OBTAIN_MENU_ITEMS, ex);
-		} finally {
-			close(con, stmt, rs);
-		}
-		return menuItemsList;
-	}
-
-	/**
-	 * Returns menu items of the given order.
-	 * 
-	 * @param order
-	 *            Order entity.
-	 * @return List of menu item entities.
-	 */
-	public List<MenuItem> findMenuItems(Order order) throws DBException {
-		List<MenuItem> menuItemsList = new ArrayList<MenuItem>();
+	public List<Car> findCars() throws DBException {
+		List<Car> carsList = new ArrayList<Car>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Connection con = null;
 		try {
 			con = getConnection();
-			pstmt = con.prepareStatement(SQL_FIND_MENU_ITEMS_BY_ORDER);
-			pstmt.setLong(1, order.getId());
+			pstmt = con.prepareStatement(SQL_FIND_ALL_CARS);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				menuItemsList.add(extractMenuItem(rs));
+				carsList.add(extractCar(rs));
 			}
 			con.commit();
 		} catch (SQLException ex) {
 			rollback(con);
-			LOG.error(Messages.ERR_CANNOT_OBTAIN_MENU_ITEMS_BY_ORDER, ex);
-			throw new DBException(Messages.ERR_CANNOT_OBTAIN_MENU_ITEMS_BY_ORDER, ex);
+			LOG.error(Messages.ERR_CANNOT_OBTAIN_CARS, ex);
+			throw new DBException(Messages.ERR_CANNOT_OBTAIN_CARS, ex);
 		} finally {
 			close(con, pstmt, rs);
 		}
-		return menuItemsList;
+		return carsList;
 	}
+	
+	
 
-	/**
-	 * Returns menu items with given identifiers.
-	 * 
-	 * @param ids
-	 *            Identifiers of menu items.
-	 * @return List of menu item entities.
-	 */
-	public List<MenuItem> findMenuItems(String[] ids) throws DBException {
-		List<MenuItem> menuItemsList = new ArrayList<MenuItem>();
-		Statement stmt = null;
-		ResultSet rs = null;
+	public boolean addNewCar(Car car) throws DBException {
 		Connection con = null;
 		try {
 			con = getConnection();
-
-			// create SQL query like "... id IN (1, 2, 7)"
-			StringBuilder query = new StringBuilder(
-					"SELECT * FROM menu WHERE id IN (");
-			for (String idAsString : ids) {
-				query.append(idAsString).append(',');
-			}
-			query.deleteCharAt(query.length() - 1);
-			query.append(')');
-
-			stmt = con.createStatement();
-			rs = stmt.executeQuery(query.toString());
-			while (rs.next()) {
-				menuItemsList.add(extractMenuItem(rs));
-			}
-		} catch (SQLException ex) {
-			rollback(con);
-			throw new DBException(
-					Messages.ERR_CANNOT_OBTAIN_MENU_ITEMS_BY_IDENTIFIERS, ex);
-		} finally {
-			close(con, stmt, rs);
-		}
-		return menuItemsList;
-	}
-
-	/**
-	 * Returns all orders.
-	 * 
-	 * @return List of order entities.
-	 */
-	public List<Order> findOrders() throws DBException {
-		List<Order> ordersList = new ArrayList<Order>();
-		Statement stmt = null;
-		ResultSet rs = null;
-		Connection con = null;
-		try {
-			con = getConnection();
-			stmt = con.createStatement();
-			rs = stmt.executeQuery(SQL_FIND_ALL_ORDERS);
-			while (rs.next()) {
-				ordersList.add(extractOrder(rs));
-			}
+			addNewCar(con, car);
 			con.commit();
 		} catch (SQLException ex) {
 			rollback(con);
-			throw new DBException(Messages.ERR_CANNOT_OBTAIN_ORDERS, ex);
+			LOG.error(Messages.ERR_CANNOT_CREATE_CAR);
+			throw new DBException(Messages.ERR_CANNOT_CREATE_CAR, ex);
 		} finally {
-			close(con, stmt, rs);
+			close(con);
 		}
-		return ordersList;
+		return true;
 	}
 
-	/**
-	 * Returns orders with the given status.
-	 * 
-	 * @param statusId
-	 *            Status identifier.
-	 * @return List of order entities.
-	 */
-	public List<Order> findOrders(int statusId) throws DBException {
-		List<Order> ordersList = new ArrayList<Order>();
+	private void addNewCar(Connection con, Car car) throws SQLException {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = con.prepareStatement(SQL_CREATE_CAR);
+			int k = 1;
+			pstmt.setString(k++, car.getBrand());
+			pstmt.setString(k++, car.getModel());
+			pstmt.setString(k++, car.getType());
+			pstmt.setString(k++, car.getImage());
+			pstmt.setInt(k++, car.getEarOfIssue());
+			pstmt.setString(k++, car.getQualityClass());
+			pstmt.setDouble(k++, car.getPrice());
+			pstmt.setBoolean(k++, car.isRentered());
+			pstmt.setInt(k, car.getDamage());
+
+			pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+	}
+
+	public Car findCar(int carId) throws DBException {
+		Car car = new Car();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Connection con = null;
 		try {
 			con = getConnection();
-			pstmt = con.prepareStatement(SQL_FIND_ORDERS_BY_STATUS);
-			pstmt.setInt(1, statusId);
+			pstmt = con.prepareStatement(SQL_FIND_CAR_BY_ID);
+			pstmt.setInt(1, carId);
 			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				ordersList.add(extractOrder(rs));
+			if (rs.next()) {
+				car = extractCar(rs);
 			}
 			con.commit();
 		} catch (SQLException ex) {
 			rollback(con);
-			throw new DBException(
-					Messages.ERR_CANNOT_OBTAIN_ORDERS_BY_STATUS_ID, ex);
+			LOG.error(Messages.ERR_CANNOT_OBTAIN_CAR, ex);
+			throw new DBException(Messages.ERR_CANNOT_OBTAIN_CAR, ex);
 		} finally {
 			close(con, pstmt, rs);
 		}
-		return ordersList;
-	}
-
-	/**
-	 * Returns orders with given identifiers.
-	 * 
-	 * @param ids
-	 *            Orders identifiers.
-	 * @return List of order entities.
-	 */
-	public List<Order> findOrders(String[] ids) throws DBException {
-		List<Order> ordersList = new ArrayList<Order>();
-		Statement stmt = null;
-		ResultSet rs = null;
-		Connection con = null;
-		try {
-			con = getConnection();
-
-			// create SQL query like "... id IN (1, 2, 7)"
-			StringBuilder query = new StringBuilder(
-					"SELECT * FROM orders WHERE id IN (");
-			for (String idAsString : ids) {
-				query.append(idAsString).append(',');
-			}
-			query.deleteCharAt(query.length() - 1);
-			query.append(')');
-
-			stmt = con.createStatement();
-			rs = stmt.executeQuery(query.toString());
-			while (rs.next()) {
-				ordersList.add(extractOrder(rs));
-			}
-			con.commit();
-		} catch (SQLException ex) {
-			rollback(con);
-			throw new DBException(
-					Messages.ERR_CANNOT_OBTAIN_ORDERS_BY_IDENTIFIERS, ex);
-		} finally {
-			close(con, stmt, rs);
-		}
-		return ordersList;
-	}
-
-	/**
-	 * Returns orders of the given user and status
-	 * 
-	 * @param user
-	 *            User entity.
-	 * @param statusId
-	 *            Status identifier.
-	 * @return List of order entities.
-	 * @throws DBException
-	 */
-	public List<Order> findOrders(User user, int statusId) throws DBException {
-		List<Order> ordersList = new ArrayList<Order>();
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		Connection con = null;
-		try {
-			con = getConnection();
-			pstmt = con.prepareStatement(SQL_FIND_ORDERS_BY_STATUS_AND_USER);
-			pstmt.setInt(1, statusId);
-			pstmt.setLong(2, user.getId());
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				ordersList.add(extractOrder(rs));
-			}
-			con.commit();
-		} catch (SQLException ex) {
-			rollback(con);
-			throw new DBException(
-					Messages.ERR_CANNOT_OBTAIN_ORDERS_BY_USER_AND_STATUS_ID, ex);
-		} finally {
-			close(con, pstmt, rs);
-		}
-		return ordersList;
+		return car;
 	}
 
 	/**
 	 * Returns a user with the given identifier.
 	 * 
-	 * @param id
-	 *            User identifier.
+	 * @param id User identifier.
 	 * @return User entity.
 	 * @throws DBException
 	 */
-	public User findUser(long id) throws DBException {
+	public User findUser(int id) throws DBException {
 		User user = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -418,7 +217,7 @@ public final class DBManager {
 		try {
 			con = getConnection();
 			pstmt = con.prepareStatement(SQL_FIND_USER_BY_ID);
-			pstmt.setLong(1, id);
+			pstmt.setInt(1, id);
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
 				user = extractUser(rs);
@@ -436,8 +235,7 @@ public final class DBManager {
 	/**
 	 * Returns a user with the given login.
 	 * 
-	 * @param login
-	 *            User login.
+	 * @param login User login.
 	 * @return User entity.
 	 * @throws DBException
 	 */
@@ -467,11 +265,11 @@ public final class DBManager {
 	/**
 	 * Update user.
 	 * 
-	 * @param user
-	 *            user to update.
+	 * @param user user to update.
+	 * @return
 	 * @throws DBException
 	 */
-	public void updateUser(User user) throws DBException {
+	public boolean updateUser(User user) throws DBException {
 		Connection con = null;
 		try {
 			con = getConnection();
@@ -483,17 +281,80 @@ public final class DBManager {
 		} finally {
 			close(con);
 		}
+		return true;
+	}
+
+	public boolean createContract(Contract contract) throws DBException {
+		Connection con = null;
+		try {
+			con = getConnection();
+			createContract(con, contract);
+			con.commit();
+		} catch (SQLException ex) {
+			rollback(con);
+			throw new DBException(Messages.ERR_CANNOT_CREATE_CONTRACT, ex);
+		} finally {
+			close(con);
+		}
+		return true;
+	}
+
+	public boolean addBill(Bill bill) throws DBException {
+		Connection con = null;
+		try {
+			con = getConnection();
+			addBill(con, bill);
+			con.commit();
+		} catch (SQLException ex) {
+			rollback(con);
+			throw new DBException(Messages.ERR_CANNOT_CREATE_BILL, ex);
+		} finally {
+			close(con);
+		}
+		return true;
+	}
+
+	public void updateContractStatus(Status status, int contractId) throws DBException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Connection con = null;
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(SQL_UPDATE_CONTRACT_STATUS_BY_CONTRACT_ID);
+			pstmt.setInt(1, status.ordinal() + 1);
+			pstmt.setInt(2, contractId);
+			pstmt.execute();
+			con.commit();
+		} catch (SQLException e) {
+			throw new DBException(Messages.ERR_CANNOT_UPDATE_CONTRACT, e);
+		} finally {
+			close(con, pstmt, rs);
+		}
 	}
 
 	// //////////////////////////////////////////////////////////
 	// Entity access methods (for transactions)
 	// //////////////////////////////////////////////////////////
 
+	private void addBill(Connection con, Bill bill) throws SQLException {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = con.prepareStatement(SQL_CREATE_BILL);
+			int k = 1;
+			pstmt.setDouble(k++, bill.getTotalPrice());
+			pstmt.setInt(k, bill.getContractId());
+			LOG.trace(pstmt);
+
+			pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+	}
+
 	/**
 	 * Update user.
 	 * 
-	 * @param user
-	 *            user to update.
+	 * @param user user to update.
 	 * @throws SQLException
 	 */
 	private void updateUser(Connection con, User user) throws SQLException {
@@ -501,14 +362,90 @@ public final class DBManager {
 		try {
 			pstmt = con.prepareStatement(SQL_UPDATE_USER);
 			int k = 1;
-			pstmt.setString(k++, user.getPassword());
-			pstmt.setString(k++, user.getFirstName());
-			pstmt.setString(k++, user.getLastName());
-			pstmt.setLong(k, user.getId());
+			pstmt.setString(k++, user.getFirstname());
+			pstmt.setString(k++, user.getName());
+			pstmt.setString(k++, user.getLastname());
+			pstmt.setString(k++, user.getAdress());
+			pstmt.setString(k++, user.getPasport());
+			pstmt.setInt(k++, user.getTel());
+			pstmt.setInt(k, user.getId());
+
 			pstmt.executeUpdate();
 		} finally {
 			close(pstmt);
 		}
+	}
+
+	/**
+	 * Create contract.
+	 * 
+	 * @param con  connection
+	 * @param car  car from order
+	 * @param user user who make order
+	 * @throws SQLException
+	 */
+	private void createContract(Connection con, Contract contract) throws SQLException {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = con.prepareStatement(SQL_CREATE_CONTRACT);
+			int k = 1;
+			pstmt.setInt(k++, contract.getRentalTerm());
+			pstmt.setInt(k++, contract.getCarId());
+			pstmt.setBoolean(k++, contract.isWithDriver());
+			pstmt.setInt(k++, contract.getUserId());
+			pstmt.setInt(k, contract.getStatus().ordinal() + 1);
+			pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+	}
+
+	public List<Contract> findUserContract(User user) throws DBException {
+		List<Contract> contracts = new ArrayList<Contract>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Connection con = null;
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(SQL_FIND_CONTRACT_BY_USER);
+			pstmt.setInt(1, user.getId());
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				contracts.add(extractContract(rs));
+			}
+			con.commit();
+		} catch (SQLException ex) {
+			rollback(con);
+			LOG.error(Messages.ERR_CANNOT_OBTAIN_CONTRACT, ex);
+			throw new DBException(Messages.ERR_CANNOT_OBTAIN_CONTRACT, ex);
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return contracts;
+	}
+
+	public Contract findUserContract(int contractId) throws DBException {
+		Contract contract = new Contract();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Connection con = null;
+		try {
+			con = getConnection();
+			pstmt = con.prepareStatement(SQL_FIND_CONTRACT_BY_CONTRACT_ID);
+			pstmt.setInt(1, contractId);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				contract = extractContract(rs);
+			}
+			con.commit();
+		} catch (SQLException ex) {
+			rollback(con);
+			LOG.error(Messages.ERR_CANNOT_OBTAIN_CONTRACT, ex);
+			throw new DBException(Messages.ERR_CANNOT_OBTAIN_CONTRACT, ex);
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return contract;
 	}
 
 	// //////////////////////////////////////////////////////////
@@ -518,8 +455,7 @@ public final class DBManager {
 	/**
 	 * Closes a connection.
 	 * 
-	 * @param con
-	 *            Connection to be closed.
+	 * @param con Connection to be closed.
 	 */
 	private void close(Connection con) {
 		if (con != null) {
@@ -569,8 +505,7 @@ public final class DBManager {
 	/**
 	 * Rollbacks a connection.
 	 * 
-	 * @param con
-	 *            Connection to be rollbacked.
+	 * @param con Connection to be rollbacked.
 	 */
 	private void rollback(Connection con) {
 		if (con != null) {
@@ -586,112 +521,77 @@ public final class DBManager {
 	// Other methods
 	// //////////////////////////////////////////////////////////
 	/**
-	 * Extracts a user order bean from the result set.
+	 * Extracts a bill from the result set.
 	 * 
-	 * @param rs
-	 *            Result set from which a user order bean will be extracted.
-	 * @return UserOrderBean object
+	 * @param rs Result set from which a bill entity will be extracted.
+	 * @return Bill object
 	 */
+	private Bill extractBill(ResultSet rs) throws SQLException {
+		Bill bill = new Bill();
+		bill.setId(rs.getInt(Fields.ENTITY_ID));
+		bill.setTotalPrice(rs.getDouble(Fields.BILL_TOTAL_PRICE));
+		bill.setContractId(rs.getInt(Fields.BILL_CONTRACT_ID));
+		return bill;
+	}
 
-	private UserOrderBean extractUserOrderBean(ResultSet rs)
-			throws SQLException {
-		UserOrderBean bean = new UserOrderBean();
-		bean.setId(rs.getLong(Fields.USER_ORDER_BEAN_ORDER_ID));
-		bean.setOrderBill(rs.getInt(Fields.USER_ORDER_BEAN_ORDER_BILL));
-		bean.setUserFirstName(rs
-				.getString(Fields.USER_ORDER_BEAN_USER_FIRST_NAME));
-		bean.setUserLastName(rs
-				.getString(Fields.USER_ORDER_BEAN_USER_LAST_NAME));
-		bean.setStatusName(rs.getString(Fields.USER_ORDER_BEAN_STATUS_NAME));
-		return bean;
+	/**
+	 * Extracts a contract from the result set.
+	 * 
+	 * @param rs Result set from which a contract entity will be extracted.
+	 * @return Contract object
+	 */
+	private Contract extractContract(ResultSet rs) throws SQLException {
+		Contract contract = new Contract();
+		contract.setId(rs.getInt(Fields.ENTITY_ID));
+		contract.setRentalTerm(rs.getInt(Fields.CONTRACT_RENTAL_TERM));
+		contract.setCarId(rs.getInt(Fields.CONTRACT_CAR_ID));
+		contract.setWithDriver(rs.getBoolean(Fields.CONTRACT_WITH_DRIVER));
+		contract.setUserId(rs.getInt(Fields.CONTRACT_USER_ID));
+		contract.setStatus(Status.values()[rs.getInt(Fields.CONTRACT_STATUS_ID) - 1]);
+		return contract;
 	}
 
 	/**
 	 * Extracts a user entity from the result set.
 	 * 
-	 * @param rs
-	 *            Result set from which a user entity will be extracted.
+	 * @param rs Result set from which a user entity will be extracted.
 	 * @return User entity
 	 */
 	private User extractUser(ResultSet rs) throws SQLException {
 		User user = new User();
-		user.setId(rs.getLong(Fields.ENTITY_ID));
+		user.setId(rs.getInt(Fields.ENTITY_ID));
 		user.setLogin(rs.getString(Fields.USER_LOGIN));
 		user.setPassword(rs.getString(Fields.USER_PASSWORD));
-		user.setFirstName(rs.getString(Fields.USER_FIRST_NAME));
-		user.setLastName(rs.getString(Fields.USER_LAST_NAME));
+		user.setAdress(rs.getString(Fields.USER_ADRESS));
+		user.setName(rs.getString(Fields.USER_NAME));
+		user.setFirstname(rs.getString(Fields.USER_FIRST_NAME));
+		user.setLastname(rs.getString(Fields.USER_LAST_NAME));
+		user.setPasport(rs.getString(Fields.USER_PASPORT));
+		user.setTel(rs.getInt(Fields.USER_TELEPHONE));
+		user.setBlocked(rs.getBoolean(Fields.USER_BLOCKED));
 		user.setRoleId(rs.getInt(Fields.USER_ROLE_ID));
 		return user;
 	}
 
 	/**
-	 * Extracts an order entity from the result set.
+	 * Extracts a car from the result set.
 	 * 
-	 * @param rs
-	 *            Result set from which an order entity will be extracted.
-	 * @return
+	 * @param rs Result set from which a car entity will be extracted.
+	 * @return Car entity.
 	 */
-	private Order extractOrder(ResultSet rs) throws SQLException {
-		Order order = new Order();
-		order.setId(rs.getLong(Fields.ENTITY_ID));
-		order.setBill(rs.getInt(Fields.ORDER_BILL));
-		order.setUserId(rs.getLong(Fields.ORDER_USER_ID));
-		order.setStatusId(rs.getInt(Fields.ORDER_STATUS_ID));
-		return order;
+	private Car extractCar(ResultSet rs) throws SQLException {
+		Car car = new Car();
+		car.setId(rs.getInt(Fields.ENTITY_ID));
+		car.setBrand(rs.getString(Fields.CAR_BRAND));
+		car.setModel(rs.getString(Fields.CAR_MODEL));
+		car.setType(rs.getString(Fields.CAR_TYPE));
+		car.setImage(rs.getString(Fields.CAR_IMAGE));
+		car.setEarOfIssue(rs.getInt(Fields.CAR_EAR_OF_ISSUE));
+		car.setQualityClass(rs.getString(Fields.CAR_QUALITY_CLASS));
+		car.setPrice(rs.getDouble(Fields.CAR_PRICE));
+		car.setRentered(rs.getBoolean(Fields.CAR_RENTERED));
+		car.setDamage(rs.getInt(Fields.CAR_DAMAGE));
+		return car;
 	}
-
-	/**
-	 * Extracts a category entity from the result set.
-	 * 
-	 * @param rs
-	 *            Result set from which a category entity will be extracted.
-	 * @return Category entity.
-	 */
-	private Category extractCategory(ResultSet rs) throws SQLException {
-		Category category = new Category();
-		category.setId(rs.getLong(Fields.ENTITY_ID));
-		category.setName(rs.getString(Fields.CATEGORY_NAME));
-		return category;
-	}
-
-	/**
-	 * Extracts a menu item from the result set.
-	 * 
-	 * @param rs
-	 *            Result set from which a menu item entity will be extracted.
-	 * @return Menu item entity.
-	 */
-	private MenuItem extractMenuItem(ResultSet rs) throws SQLException {
-		MenuItem menuItem = new MenuItem();
-		menuItem.setId(rs.getLong(Fields.ENTITY_ID));
-		menuItem.setName(rs.getString(Fields.MENU_ITEM_NAME));
-		menuItem.setPrice(rs.getInt(Fields.MENU_ITEM_PRICE));
-		menuItem.setCategoryId(rs.getLong(Fields.MENU_ITEM_CATEGORY_ID));
-		return menuItem;
-	}
-
-	/**************** THIS METHOD IS NOT USED IN THE PROJECT *******/
-	/**
-	 * Returns a DB connection. This method is just for a example how to use the
-	 * DriverManager to obtain a DB connection. It does not use a pool
-	 * connections and not used in this project. It is preferable to use
-	 * {@link #getConnection()} method instead.
-	 * 
-	 * @return A DB connection.
-	 */
-	public Connection getConnectionWithDriverManager() throws SQLException {
-		try {
-			Class.forName("org.apache.derby.jdbc.ClientDriver");
-		} catch (ClassNotFoundException ex) {
-			LOG.error("Cannot obtain a connection", ex);
-		}
-		Connection connection = DriverManager
-				.getConnection("jdbc:derby://localhost:1527/st4db;create=true;user=test;password=test");
-		connection
-				.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-		connection.setAutoCommit(false);
-		return connection;
-	}
-	/**************************************************************/
 
 }

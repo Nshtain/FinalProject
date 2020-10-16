@@ -1,7 +1,5 @@
 package kolesnick.SummaryTask.db.entity;
 
-import java.sql.Date;
-
 public class Car extends Entity{
 
 	private static final long serialVersionUID = 4851569582203129092L;
@@ -9,12 +7,12 @@ public class Car extends Entity{
 	private String brand;
 	private String model;
 	private String type;
-	private String color;
-	private Date earOfIssue;
+	private String image;
+	private int earOfIssue;
 	private String qualityClass;
 	private double price;
 	private boolean rentered;
-	private int damageId;
+	private int damage;
 	
 	public String getBrand() {
 		return brand;
@@ -34,17 +32,17 @@ public class Car extends Entity{
 	public void setType(String type) {
 		this.type = type;
 	}
-	public String getColor() {
-		return color;
+	public String getImage() {
+		return image;
 	}
-	public void setColor(String color) {
-		this.color = color;
+	public void setImage(String image) {
+		this.image = image;
 	}
-	public Date getEarOfIssue() {
+	public int getEarOfIssue() {
 		return earOfIssue;
 	}
-	public void setEarOfIssue(Date earOfIssue) {
-		this.earOfIssue = earOfIssue;
+	public void setEarOfIssue(int date) {
+		this.earOfIssue = date;
 	}
 	public String getQualityClass() {
 		return qualityClass;
@@ -66,15 +64,15 @@ public class Car extends Entity{
 	}
 	@Override
 	public String toString() {
-		return "Car [brand=" + brand + ", model=" + model + ", type=" + type + ", color=" + color + ", earOfIssue="
+		return "Car [brand=" + brand + ", model=" + model + ", type=" + type + ", img=" + image + ", earOfIssue="
 				+ earOfIssue + ", qualityClass=" + qualityClass + ", price=" + price + ", rentered=" + rentered
-				+ ", id=" + getId() + ", damageId=" + damageId + "]";
+				+ ", id=" + getId() + ", damage=" + damage + "]";
 	}
-	public int getDamageId() {
-		return damageId;
+	public int getDamage() {
+		return damage;
 	}
-	public void setDamageId(int damageId) {
-		this.damageId = damageId;
+	public void setDamage(int damage) {
+		this.damage = damage;
 	}
 	
 	

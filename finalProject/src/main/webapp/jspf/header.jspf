@@ -1,0 +1,79 @@
+<%--=========================================================================== 
+Header (top area). 
+===========================================================================--%> 
+
+<%@ include file="/jspf/directive/page.jspf" %>
+<%@ include file="/jspf/directive/taglib.jspf" %>
+
+<tr>
+<td id="header">
+
+<%--=========================================================================== 
+This is the user menu. 
+===========================================================================--%> 
+
+<div id="leftHeader">
+	
+	<a href="${pageContext.request.contextPath}/controller?command=listCars">Cars</a> &nbsp;
+	<c:choose>
+
+<%--=========================================================================== 
+This way we define the ADMIN MENU. 
+===========================================================================--%> 
+		<c:when test="${userRole.name == 'admin' }">
+			<a href="${pageContext.request.contextPath}/jsp/admin/addNewCar.jsp">Add car</a> &nbsp;
+		</c:when>
+
+		
+<%--=========================================================================== 
+This way we define the USER MENU.
+===========================================================================--%> 
+		<c:when test="${userRole.name == 'client'}">
+			<a href="${pageContext.request.contextPath}/controller?command=userContract">My contract</a> &nbsp;
+		</c:when>
+	</c:choose>
+	
+<%--=========================================================================== 
+This way we define the settings anchor.
+===========================================================================--%> 
+	<a href="${pageContext.request.contextPath}/controller?command=viewSettings">Settings</a> &nbsp;
+
+</div>
+
+<%--=========================================================================== 
+This way we define the menu located at the right of header. 
+===========================================================================--%> 
+<div id="rightHeader" >
+
+<%--=========================================================================== 
+Type user name if the user object is presented in the current session.  
+===========================================================================--%> 
+	<c:out value="${user.login} "/>
+	
+<%--=========================================================================== 
+Type user role name if the user object is presented in the current session.  
+===========================================================================--%> 
+	<c:if test="${not empty userRole}">
+		<c:out value="(${userRole.name})"/>
+	</c:if>
+
+<%--=========================================================================== 
+Type link to logout  
+===========================================================================--%> 
+	<c:if test= "${not empty user}">
+		<a href="controller?command=logout">
+			Logout
+		</a> 	
+	</c:if>
+
+</div>
+
+<c:if test="${empty user and title ne 'Login'}">
+	<div id="rightHeader">
+		<a href="${pageContext.request.contextPath}/login.jsp">Login</a>
+	</div>
+</c:if>
+
+	</td>
+</tr>
+

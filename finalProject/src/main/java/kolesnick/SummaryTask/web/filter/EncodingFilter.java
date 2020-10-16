@@ -10,17 +10,16 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 /**
  * Encoding filter.
- * 
- * @author D.Kolesnikov
- * 
  */
 public class EncodingFilter implements Filter {
 
-	private static final Logger LOG = Logger.getLogger(EncodingFilter.class);
+	private static final Logger LOG = LogManager.getLogger(EncodingFilter.class);
 
 	private String encoding;
 
