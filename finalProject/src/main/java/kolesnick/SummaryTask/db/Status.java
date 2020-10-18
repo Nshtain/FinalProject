@@ -5,7 +5,7 @@ package kolesnick.SummaryTask.db;
  * Status entity.
  */
 public enum Status {
-	WAITING_FOR_PAYMENT, DECLINED, PAID, CLOSED, DAMAGE;
+	NEW, CONFIRMED, DECLINED, PAID, CLOSED, DAMAGE, PAID_DAMAGE;
 	
 	
 	private String descriptioin;

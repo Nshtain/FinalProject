@@ -74,7 +74,7 @@ public class User extends Entity{
 	public String toString() {
 		return "User [id=" + getId() + ", login=" + login + ", password=" + password + ", adress=" + adress + ", name="
 				+ name + ", firstname=" + firstname + ", lastname=" + lastname + ", pasport=" + pasport + ", tel=" + tel
-				+ ", role_id=" + roleId + " , blocked" + blocked + "]";
+				+ ", role_id=" + roleId + " , blocked = " + blocked + "]";
 	}
 	public boolean isBlocked() {
 		return blocked;

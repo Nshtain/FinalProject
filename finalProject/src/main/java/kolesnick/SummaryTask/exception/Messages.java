@@ -19,18 +19,6 @@ public class Messages {
 
 	public static final String ERR_CANNOT_OBTAIN_CARS = "Cannot obtain cars";
 
-	public static final String ERR_CANNOT_OBTAIN_MENU_ITEMS_BY_ORDER = "Cannot obtain menu items by order";
-
-	public static final String ERR_CANNOT_OBTAIN_MENU_ITEMS_BY_IDENTIFIERS = "Cannot obtain menu items by its identifiers";
-
-	public static final String ERR_CANNOT_OBTAIN_ORDERS = "Cannot obtain orders";
-
-	public static final String ERR_CANNOT_OBTAIN_ORDERS_BY_STATUS_ID = "Cannot obtain orders by status id";
-
-	public static final String ERR_CANNOT_OBTAIN_ORDERS_BY_IDENTIFIERS = "Cannot obtain orders by its identifiers";
-
-	public static final String ERR_CANNOT_OBTAIN_ORDERS_BY_USER_AND_STATUS_ID = "Cannot obtain orders by user and status id";
-
 	public static final String ERR_CANNOT_OBTAIN_USER_BY_ID = "Cannot obtain a user by its id";
 
 	public static final String ERR_CANNOT_OBTAIN_USER_BY_LOGIN = "Cannot obtain a user by its login";
@@ -56,5 +44,15 @@ public class Messages {
 	public static final String ERR_CANNOT_UPDATE_CONTRACT = "Cannot update contract";
 
 	public static final String ERR_CANNOT_CREATE_BILL = "Cannot create bill";
+
+	public static final String ERR_CANNOT_DELETE_CAR = "Cannot delete car";
+
+	public static final String ERR_CANNOT_UPDATE_CAR = "Cannot update car";
+
+	public static final String ERR_CANNOT_CREATE_USER = "Cannot create user";
+
+	public static final String ERR_CANNOT_OBTAIN_CONTRACTS = "Cannot obtain contracts";
+
+	public static final String ERR_CANNOT_OBTAIN_USER_CLIENT = "Cannot obtain users(client)";
 	
 }

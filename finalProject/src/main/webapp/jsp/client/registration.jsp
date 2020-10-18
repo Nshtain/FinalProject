@@ -16,7 +16,7 @@
 				<%-- CONTENT --%>
 				<h2>Insert info</h2>
 
-				<form id="updateUserInfo_form"
+				<form id="login_form"
 					action="${pageContext.request.contextPath}/controller"
 					method="post">
 					<input type="hidden" name="command" value="registration" />

@@ -38,7 +38,7 @@ public class MakeOrderCommand extends Command {
 		contract.setWithDriver(Boolean.parseBoolean(request.getParameter("driver")));
 		contract.setCarId(Integer.parseInt((String) (session.getAttribute("carId"))));
 		contract.setUserId(user.getId());
-		contract.setStatus(Status.WAITING_FOR_PAYMENT);
+		contract.setStatus(Status.NEW);
 		
 		String forward = Path.PAGE_ERROR_PAGE;
 

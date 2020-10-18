@@ -37,15 +37,31 @@ public class LoginCommand extends Command {
 		LOG.trace("Request parameter: login --> " + login);
 
 		String password = request.getParameter("password");
-		if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
-			throw new DBException("Login/password cannot be empty");
+		
+		if (request.getParameter("newAcc") != null) {
+			LOG.trace("Try to create a new acc");
+			
+			User user = manager.findUserByLogin(login);
+			if (user != null) {
+				LOG.trace("This login is already taken");
+				throw new DBException("This login is already taken");
+			}
+			user = new User();
+			user.setLogin(login);
+			user.setPassword(password);
+			user.setRoleId(3);
+			manager.createUser(user);
 		}
-
+		
 		User user = manager.findUserByLogin(login);
 		LOG.trace("Found in DB: user --> " + user);
 
 		if (user == null || !password.equals(user.getPassword())) {
 			throw new DBException("Cannot find user with such login/password");
+		}
+		
+		if (user.isBlocked()) {
+			throw new DBException("Your acc was blocked");
 		}
 
 		Role userRole = Role.getRole(user);

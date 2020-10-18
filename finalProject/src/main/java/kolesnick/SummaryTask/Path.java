@@ -16,11 +16,13 @@ public final class Path {
 	public static final String PAGE_MAKE_ORDER = "/jsp/client/makeOrder.jsp";
 	public static final String PAGE_USER_CONTRACT = "/jsp/client/contract.jsp";
 	public static final String PAGE_VIEW_BILL = "/jsp/client/bill.jsp";
+	public static final String PAGE_LIST_CLIENT = "/jsp/admin/clients.jsp";
 
 
 	// commands
 	public static final String COMMAND_LIST_ORDERS = "/controller?command=listOrders";
 	public static final String COMMAND_LIST_CARS = "/controller?command=listCars";
 	public static final String COMMAND_USER_CONTRACT = "/controller?command=userContract";
+	public static final String COMMAND_LIST_CLIENT = "/controller?command=clientList";
 
 }

@@ -49,14 +49,17 @@
 											<td>${contract.withDriver}</td>
 											<td>${contract.status}</td>
 											<td><c:choose>
-													<c:when test="${contract.status.ordinal() == 0}">
+													<c:when test="${contract.status == 'CONFIRMED' || contract.status == 'DAMAGE'}">
 														<input type="hidden" name="contractId"
 															value="${contract.id}" />
-														<input type="submit" value="pay" />
+														<input type="submit" value="Pay" />
 													</c:when>
-													<c:when test="${contract.status.ordinal() == 1}">
-											${contract.status.getDescription()}	
-										</c:when>
+													<c:when test="${contract.status == 'DECLINED'}">
+														${contract.status.getDescription()}	
+													</c:when>
+													<c:when test="${contract.status == 'NEW'}">
+														Wait for confirmation
+													</c:when>
 												</c:choose></td>
 										</tr>
 									</table>

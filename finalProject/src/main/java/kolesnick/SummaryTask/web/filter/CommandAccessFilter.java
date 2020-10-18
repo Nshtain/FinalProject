@@ -90,6 +90,12 @@ public class CommandAccessFilter implements Filter {
 		// roles
 		accessMap.put(Role.ADMIN, asList(fConfig.getInitParameter("admin")));
 		accessMap.get(Role.ADMIN).add("addNewCar");
+		accessMap.get(Role.ADMIN).add("deleteCar");
+		accessMap.get(Role.ADMIN).add("updateCar");
+		accessMap.get(Role.ADMIN).add("addManager");
+		accessMap.get(Role.ADMIN).add("clientList");
+		accessMap.get(Role.ADMIN).add("updateClientStatus");
+
 		accessMap.put(Role.CLIENT, asList(fConfig.getInitParameter("client")));
 		accessMap.get(Role.CLIENT).add("registration");
 		accessMap.get(Role.CLIENT).add("makeOrder");
@@ -97,6 +103,10 @@ public class CommandAccessFilter implements Filter {
 		accessMap.get(Role.CLIENT).add("payBill");
 		accessMap.get(Role.CLIENT).add("showBill");
 
+
+		accessMap.put(Role.MANAGER, asList(fConfig.getInitParameter("manager")));
+		accessMap.get(Role.MANAGER).add("listOrders");
+		accessMap.get(Role.MANAGER).add("updateContractStatus");
 
 		LOG.trace("Access map --> " + accessMap);
 

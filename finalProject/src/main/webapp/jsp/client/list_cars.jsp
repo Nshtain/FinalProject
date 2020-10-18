@@ -31,14 +31,17 @@
 						<td><div class="dropdown">
 								<button class="dropbtn">Brand</button>
 								<div class="dropdown-content">
-									<a href="#">Ссылка 1</a> <a href="#">Ссылка 2</a> <a href="#">Ссылка
-										3</a>
+									<a href="?command=listCars&brand=audi">Audi</a> <a
+										href="?command=listCars&brand=bmw">BMW</a> <a
+										href="?command=listCars&brand=tesla">Tesla</a>
 								</div>
-							</div><div class="dropdown">
+							</div>
+							<div class="dropdown">
 								<button class="dropbtn">Quality Class</button>
 								<div class="dropdown-content">
-									<a href="#">Ссылка 1</a> <a href="#">Ссылка 2</a> <a href="#">Ссылка
-										3</a>
+									<a href="?command=listCars&class=elita">Elit</a> <a
+										href="?command=listCars&class=econom">Econom</a> <a
+										href="?command=listCars&class=norm">Norm</a>
 								</div>
 							</div></td>
 					</tr>
@@ -48,23 +51,33 @@
 					<tr>
 						<c:set var="count" value="0" />
 						<c:forEach begin="${page*12}" end="${page*12+12-1}" var="i">
-						<c:if test="${i < cars.size()}">
-							<td>
-								<form id="make_order" action="controller" method="post">
-									<input type="hidden" name="command" value="checkMakeOrder" />
+							<c:if test="${i < cars.size()}">
+								<td>
+									<form id="make_order" action="controller" method="post">
+										<input type="hidden" name="command" value="checkMakeOrder" />
 
-									<div class="card">
-										<img src="${pageContext.request.contextPath}/img/${cars[i].image}">
-										<h2>${cars[i].brand} ${cars[i].model}</h2>
-										<p class="price">${cars[i].price}</p>
-										<p>Некоторый текст о машине..</p>
-										<input type="hidden" name="carId" value="${cars[i].id}" /> <input
-											type="submit" value="buy">
+										<div class="card">
+											<img
+												src="${pageContext.request.contextPath}/img/${cars[i].image}">
+											<h2>${cars[i].brand} ${cars[i].model}</h2>
+											<p class="price">${cars[i].price}</p>
+											<p>Некоторый текст о машине..</p>
+											<c:choose>
+												<c:when test="${userRole.name == 'admin'}">
+													<c:set var="cars" value="${cars}" scope="session" />
+													<a href="jsp/admin/updateCar.jsp?i=${i}">Update</a>
+													<a href="?command=deleteCar&carId=${cars[i].id}">Delete</a>
+												</c:when>
+												<c:otherwise>
+													<input type="hidden" name="carId" value="${cars[i].id}" />
+													<input type="submit" value="buy">
+												</c:otherwise>
+											</c:choose>
 
-									</div>
+										</div>
 
-								</form>
-							</td>
+									</form>
+								</td>
 							</c:if>
 							<c:set var="count" value="${count+1}" />
 							<mytag:mytag num="${count}" />
@@ -87,8 +100,7 @@
 									</c:forEach>
 								</c:url>
 								<c:forEach begin="1" end="${count}" var="i">
-									<li><a
-										href="${myURL}page=${i}">${i}</a></li>
+									<li><a href="${myURL}page=${i}">${i}</a></li>
 								</c:forEach>
 							</ul>
 						</td>

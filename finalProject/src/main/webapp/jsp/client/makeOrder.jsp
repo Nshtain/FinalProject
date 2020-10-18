@@ -33,7 +33,7 @@ This is the CONTENT, containing the main part of the page.
 				<%-- CONTENT --%> <%--=========================================================================== 
 Defines the web form.
 ===========================================================================--%>
-				<form id="makeOrder_form" action="${pageContext.request.contextPath}/controller" method="post">
+				<form id="login_form" action="${pageContext.request.contextPath}/controller" method="post">
 
 					<%--=========================================================================== 
 Hidden field. In the query it will act as command=login.

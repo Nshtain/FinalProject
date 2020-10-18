@@ -32,9 +32,19 @@ public class CommandContainer {
 		commands.put("payBill", new PayBillCommand());
 		commands.put("showBill", new ShowBillCommand());
 		
+
+		// manager commands
+		commands.put("listOrders", new ListOrdersCommand());
+		commands.put("updateContractStatus", new UpdateContractStatusCommand());
+		
+		
 		// admin commands
-		//commands.put("listOrders", new ListOrdersCommand());
 		commands.put("addNewCar", new CreateCarCommand());
+		commands.put("deleteCar", new DeleteCarCommand());
+		commands.put("updateCar", new UpdateCarCommand());
+		commands.put("addManager", new AddManagerCommand());
+		commands.put("clientList", new ClientListCommand());
+		commands.put("updateClientStatus", new UpdateClientStatusCommand());
 
 		
 		LOG.debug("Command container was successfully initialized");

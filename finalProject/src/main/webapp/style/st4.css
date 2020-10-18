@@ -190,18 +190,6 @@ List cars table (list_cars.jsp)
 /***************************************************************
 List order table (list_order.jsp)
 ***************************************************************/
-#list_order_table tr td {
-	border: 0px;
-	padding: 10px 20px;
-	width: 150px;
-	text-align: center;
-}
-
-#list_order_table th {
-	padding: 10px 20px;
-	width: 150px;
-	text-align: center;
-}
 
 #list_order_table {
 	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
@@ -211,10 +199,29 @@ List order table (list_order.jsp)
 	margin-left: auto;
 	margin-right: auto;
 }
+
+#list_order_table td {
+	border:0px;
+	padding: 10px 20px;
+	min-width: 100px;
+	text-align: center;
+}
+
+#list_order_table th {
+	padding: 10px 20px;
+	min-width: 100px;
+	text-align: center;
+}
+#list_order_table input {
+	max-width: 100px;
+	text-align: left;
+	height:40px;
+}
+
 #filters {
 	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
 	font-size: 14px;
-	width:100%;
+	width:70%;
 	margin-top: 5px;
 	margin-left: auto;
 	margin-right: auto;
@@ -226,6 +233,24 @@ List order table (list_order.jsp)
 	padding: 10px 20px;
 	width: 200px;
 }
+
+
+#filters td:last-child {
+	text-align: left;
+}
+#filters td:first-child {
+	text-align: left;
+}
+
+#order_table {
+  background-color: #ffffff;
+}
+
+#order_table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+
 #order_table {
 	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
 	font-size: 14px;
@@ -239,6 +264,7 @@ List order table (list_order.jsp)
 	padding: 10px 20px;
 	width: 100%;
 }
+
 
 /***************************************************************
 Make order form (list_menu.jsp)
@@ -281,6 +307,18 @@ img {
 
 .card button:hover {
 	opacity: 0.7;
+}
+
+.card a:link, a:visited {
+   color: white;
+   padding: 14px 25px;
+   text-align: center;
+   text-decoration: none;
+   display: inline-block;
+}
+
+.card a:hover, a:active {
+   background-color: red;
 }
 
 .pag {

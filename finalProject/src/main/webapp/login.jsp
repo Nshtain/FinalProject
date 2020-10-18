@@ -52,8 +52,10 @@ after you submit current form.
 						<legend>Password</legend>
 						<input type="password" name="password" required/>
 					</fieldset><br/>
-					
-					<input type="submit" value="Login">								
+					<br>
+					<button name="login" value="login" type="submit">Login</button>
+					<button name="newAcc" value="newAcc" type="submit">New acc</button>
+													
 				</form>
 				
 			<%-- CONTENT --%>

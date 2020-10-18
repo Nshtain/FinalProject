@@ -14,13 +14,14 @@ import kolesnick.SummaryTask.Path;
 import kolesnick.SummaryTask.db.DBManager;
 import kolesnick.SummaryTask.db.Status;
 import kolesnick.SummaryTask.db.entity.Bill;
-import kolesnick.SummaryTask.db.entity.Contract;
+import kolesnick.SummaryTask.db.entity.User;
 import kolesnick.SummaryTask.exception.DBException;
 
-public class PayBillCommand extends Command {
+public class UpdateClientStatusCommand extends Command {
 
-	private static final long serialVersionUID = -5121591630399781471L;
-	private static final Logger LOG = LogManager.getLogger(PayBillCommand.class);
+	private static final long serialVersionUID = -6238912135892418377L;
+
+	private static final Logger LOG = LogManager.getLogger(UpdateClientStatusCommand.class);
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
@@ -29,19 +30,17 @@ public class PayBillCommand extends Command {
 
 		DBManager manager = DBManager.getInstance();
 		
-		HttpSession session = request.getSession();
-		Bill bill = (Bill) session.getAttribute("bill");
-		Contract contract = manager.findContract(bill.getContractId());
-		Status status = Status.PAID;
-		if (contract.getStatus() == Status.DAMAGE) {
-			status = Status.PAID_DAMAGE;
-		}
-		manager.updateContractStatus(status, contract.getId());
 		String forward = Path.PAGE_ERROR_PAGE;
+		
+		int clientId = Integer.parseInt(request.getParameter("clientId"));
+		
+		User user = manager.findUser(clientId);
+		boolean status = !user.isBlocked();
+		user.setBlocked(status);
 
-		if (manager.addBill(bill)) {
-			LOG.trace("Create new bill in DB: bill --> " + bill);
-			forward = Path.COMMAND_USER_CONTRACT;
+		if (manager.updateUser(user)) {
+			LOG.trace("Update status client. client -->" + user);
+			forward = Path.COMMAND_LIST_CLIENT;
 		}
 		
 		LOG.debug("Command finished");

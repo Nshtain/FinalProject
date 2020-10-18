@@ -22,6 +22,8 @@ This way we define the ADMIN MENU.
 ===========================================================================--%> 
 		<c:when test="${userRole.name == 'admin' }">
 			<a href="${pageContext.request.contextPath}/jsp/admin/addNewCar.jsp">Add car</a> &nbsp;
+			<a href="${pageContext.request.contextPath}/jsp/admin/addManager.jsp">Add manager</a> &nbsp;
+			<a href="${pageContext.request.contextPath}/controller?command=clientList">Clients</a> &nbsp;
 		</c:when>
 
 		
@@ -30,6 +32,13 @@ This way we define the USER MENU.
 ===========================================================================--%> 
 		<c:when test="${userRole.name == 'client'}">
 			<a href="${pageContext.request.contextPath}/controller?command=userContract">My contract</a> &nbsp;
+		</c:when>
+				
+<%--=========================================================================== 
+This way we define the MANAGER MENU.
+===========================================================================--%> 
+		<c:when test="${userRole.name == 'manager'}">
+			<a href="${pageContext.request.contextPath}/controller?command=listOrders">Orders</a> &nbsp;
 		</c:when>
 	</c:choose>
 	
@@ -61,7 +70,7 @@ Type user role name if the user object is presented in the current session.
 Type link to logout  
 ===========================================================================--%> 
 	<c:if test= "${not empty user}">
-		<a href="controller?command=logout">
+		<a href="${pageContext.request.contextPath}/controller?command=logout">
 			Logout
 		</a> 	
 	</c:if>
