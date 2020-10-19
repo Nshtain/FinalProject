@@ -20,7 +20,7 @@ public class NoCommand extends Command {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) {
 		LOG.debug("Command starts");
-		
+
 		String errorMessage = "No such command";
 		request.setAttribute("errorMessage", errorMessage);
 		LOG.error("Set the request attribute: errorMessage --> " + errorMessage);

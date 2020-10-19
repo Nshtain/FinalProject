@@ -24,14 +24,14 @@ public class ClientListCommand extends Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException, DBException {
 		LOG.debug("Commands starts");
-		
+
 		List<User> clientList = DBManager.getInstance().getAllClient();
 		LOG.trace("Found in DB: clientList --> " + clientList);
-				
-		// put user orders list to request
-		request.setAttribute("clientList", clientList);		
+
+		// put user(with role=client) list to request
+		request.setAttribute("clientList", clientList);
 		LOG.trace("Set the request attribute: clientList --> " + clientList);
-		
+
 		LOG.debug("Commands finished");
 		return Path.PAGE_LIST_CLIENT;
 	}

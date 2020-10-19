@@ -24,24 +24,23 @@ public class UserContractCommand extends Command {
 	private static final long serialVersionUID = -934536572128360546L;
 	private static final Logger LOG = LogManager.getLogger(UserContractCommand.class);
 
-
 	@Override
-	public String execute(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ServletException, DBException {
-		
+	public String execute(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException, DBException {
+
 		LOG.debug("Command starts");
 		HttpSession session = request.getSession();
 
 		// get menu items list
 		List<Contract> contracts = DBManager.getInstance().findUserContract((User) session.getAttribute("user"));
 		LOG.trace("Found in DB: userContracts --> " + contracts);
-		
+
 		// sort menu by price
 		Collections.sort(contracts, new Comparator<Contract>() {
 			public int compare(Contract o1, Contract o2) {
-				return (int)(o1.getStatus().ordinal() - o2.getStatus().ordinal());
+				return (int) (o1.getStatus().ordinal() - o2.getStatus().ordinal());
 			}
-		});		
+		});
 		request.setAttribute("contracts", contracts);
 		LOG.debug("Command finished");
 		return Path.PAGE_USER_CONTRACT;

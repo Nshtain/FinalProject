@@ -8,14 +8,13 @@ import kolesnick.SummaryTask.db.entity.User;
 
 public enum Role {
 	ADMIN, MANAGER, CLIENT;
-	
+
 	public static Role getRole(User user) {
 		int roleId = user.getRoleId();
-		return Role.values()[roleId-1];
+		return Role.values()[roleId - 1];
 	}
-	
+
 	public String getName() {
 		return name().toLowerCase();
 	}
-	
 }

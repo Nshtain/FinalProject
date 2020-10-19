@@ -28,14 +28,14 @@ public class ContextListener implements ServletContextListener {
 
 		initLog4J(event.getServletContext());
 		initCommandContainer();
-	
+
 		log("Servlet context initialization finished");
 	}
 
 	/**
 	 * Initializes log4j framework.
 	 */
-	
+
 	private void initLog4J(ServletContext servletContext) {
 		log("Log4J initialization started");
 		try {
@@ -43,20 +43,20 @@ public class ContextListener implements ServletContextListener {
 			File file = new File(servletContext.getRealPath("/WEB-INF/log4.xml"));
 			loggerContext.setConfigLocation(file.toURI());
 			System.out.print(file.toURI());
-			
+
 			LOG.debug("Log4j has been initialized");
 		} catch (Exception ex) {
 			log("Cannot configure Log4j");
 			ex.printStackTrace();
-		}		
+		}
 		log("Log4J initialization finished");
 	}
-	
+
 	/**
 	 * Initializes CommandContainer.
 	 */
 	private void initCommandContainer() {
-		
+
 		// initialize commands container
 		// just load class to JVM
 		try {
@@ -65,7 +65,7 @@ public class ContextListener implements ServletContextListener {
 			throw new IllegalStateException("Cannot initialize Command Container");
 		}
 	}
-	
+
 	private void log(String msg) {
 		System.out.println("[ContextListener] " + msg);
 	}

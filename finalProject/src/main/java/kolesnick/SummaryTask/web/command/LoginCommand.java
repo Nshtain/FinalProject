@@ -25,7 +25,7 @@ public class LoginCommand extends Command {
 	private static final Logger LOG = LogManager.getLogger(LoginCommand.class);
 
 	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response) 
+	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException, DBException {
 		LOG.debug("Command starts");
 
@@ -37,10 +37,10 @@ public class LoginCommand extends Command {
 		LOG.trace("Request parameter: login --> " + login);
 
 		String password = request.getParameter("password");
-		
+
 		if (request.getParameter("newAcc") != null) {
 			LOG.trace("Try to create a new acc");
-			
+
 			User user = manager.findUserByLogin(login);
 			if (user != null) {
 				LOG.trace("This login is already taken");
@@ -52,27 +52,27 @@ public class LoginCommand extends Command {
 			user.setRoleId(3);
 			manager.createUser(user);
 		}
-		
+
 		User user = manager.findUserByLogin(login);
 		LOG.trace("Found in DB: user --> " + user);
 
 		if (user == null || !password.equals(user.getPassword())) {
 			throw new DBException("Cannot find user with such login/password");
 		}
-		
+
 		if (user.isBlocked()) {
 			throw new DBException("Your acc was blocked");
 		}
 
 		Role userRole = Role.getRole(user);
 		LOG.trace("userRole --> " + userRole);
-		
+
 		String forward = Path.PAGE_ERROR_PAGE;
 
 		if (userRole == Role.ADMIN) {
 			forward = Path.PAGE_CREATE_CAR;
 		}
-		
+
 		if (userRole == Role.MANAGER) {
 			forward = Path.COMMAND_LIST_ORDERS;
 		}

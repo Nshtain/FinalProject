@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 
 import kolesnick.SummaryTask.Path;
 import kolesnick.SummaryTask.db.DBManager;
-import kolesnick.SummaryTask.db.entity.Car;
 import kolesnick.SummaryTask.exception.DBException;
 
 public class DeleteCarCommand extends Command {
@@ -20,10 +19,10 @@ public class DeleteCarCommand extends Command {
 	private static final Logger LOG = LogManager.getLogger(DeleteCarCommand.class);
 
 	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response) 
+	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException, DBException {
-		LOG.debug("Command starts");		
-		
+		LOG.debug("Command starts");
+
 		String forward = Path.PAGE_ERROR_PAGE;
 
 		if (DBManager.getInstance().deleteCar(Integer.parseInt(request.getParameter("carId")))) {

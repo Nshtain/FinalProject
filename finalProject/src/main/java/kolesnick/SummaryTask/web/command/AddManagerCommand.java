@@ -22,14 +22,14 @@ public class AddManagerCommand extends Command {
 	private static final Logger LOG = LogManager.getLogger(AddManagerCommand.class);
 
 	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response) 
+	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException, DBException {
 		LOG.debug("Command starts");
 
 		DBManager manager = DBManager.getInstance();
-		
+
 		User user = new User();
-		
+
 		user.setLogin(request.getParameter("login"));
 		user.setPassword(request.getParameter("password"));
 		user.setFirstname(request.getParameter("firstname"));
@@ -38,8 +38,8 @@ public class AddManagerCommand extends Command {
 		user.setAdress(request.getParameter("adress"));
 		user.setPasport(request.getParameter("pasport"));
 		user.setTel(Integer.parseInt(request.getParameter("tel")));
-		user.setRoleId(Role.MANAGER.ordinal()+1);
-		
+		user.setRoleId(Role.MANAGER.ordinal() + 1);
+
 		String forward = Path.PAGE_ERROR_PAGE;
 
 		if (manager.createUser(user)) {

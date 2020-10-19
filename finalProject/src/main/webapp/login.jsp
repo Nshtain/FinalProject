@@ -2,8 +2,9 @@
 <%@ include file="/jspf/directive/taglib.jspf" %>
 
 <html>
+<fmt:message key="login" var="login" />
+<c:set var="title" value="${login}" />
 
-<c:set var="title" value="Login" />
 <%@ include file="/jspf/head.jspf" %>
 	
 <body>
@@ -45,16 +46,16 @@ after you submit current form.
 					<input type="hidden" name="command" value="login"/>
 
 					<fieldset >
-						<legend>Login</legend>
+						<legend>${login}</legend>
 						<input name="login" required/><br/>
 					</fieldset><br/>
 					<fieldset>
-						<legend>Password</legend>
+						<legend><fmt:message key="password"/></legend>
 						<input type="password" name="password" required/>
 					</fieldset><br/>
 					<br>
-					<button name="login" value="login" type="submit">Login</button>
-					<button name="newAcc" value="newAcc" type="submit">New acc</button>
+					<button name="login" value="login" type="submit">${login}</button>
+					<button name="newAcc" value="newAcc" type="submit"><fmt:message key="newAcc"/></button>
 													
 				</form>
 				

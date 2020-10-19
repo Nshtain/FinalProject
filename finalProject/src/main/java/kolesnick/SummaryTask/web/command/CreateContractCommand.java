@@ -17,10 +17,10 @@ import kolesnick.SummaryTask.db.entity.Contract;
 import kolesnick.SummaryTask.db.entity.User;
 import kolesnick.SummaryTask.exception.DBException;
 
-public class MakeOrderCommand extends Command {
+public class CreateContractCommand extends Command {
 
 	private static final long serialVersionUID = -8567784285867090191L;
-	private static final Logger LOG = LogManager.getLogger(MakeOrderCommand.class);
+	private static final Logger LOG = LogManager.getLogger(CreateContractCommand.class);
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
@@ -29,17 +29,17 @@ public class MakeOrderCommand extends Command {
 
 		HttpSession session = request.getSession();
 		DBManager manager = DBManager.getInstance();
-		
+
 		User user = (User) session.getAttribute("user");
-		
+
 		Contract contract = new Contract();
-		
+
 		contract.setRentalTerm(Integer.parseInt(request.getParameter("rentalTerm")));
 		contract.setWithDriver(Boolean.parseBoolean(request.getParameter("driver")));
 		contract.setCarId(Integer.parseInt((String) (session.getAttribute("carId"))));
 		contract.setUserId(user.getId());
 		contract.setStatus(Status.NEW);
-		
+
 		String forward = Path.PAGE_ERROR_PAGE;
 
 		if (manager.createContract(contract)) {

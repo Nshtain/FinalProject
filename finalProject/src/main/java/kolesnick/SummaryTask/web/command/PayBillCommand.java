@@ -28,7 +28,7 @@ public class PayBillCommand extends Command {
 		LOG.debug("Command starts");
 
 		DBManager manager = DBManager.getInstance();
-		
+
 		HttpSession session = request.getSession();
 		Bill bill = (Bill) session.getAttribute("bill");
 		Contract contract = manager.findContract(bill.getContractId());
@@ -43,7 +43,7 @@ public class PayBillCommand extends Command {
 			LOG.trace("Create new bill in DB: bill --> " + bill);
 			forward = Path.COMMAND_USER_CONTRACT;
 		}
-		
+
 		LOG.debug("Command finished");
 		return forward;
 	}

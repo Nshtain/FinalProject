@@ -28,11 +28,11 @@ public class UpdateContractStatusCommand extends Command {
 		LOG.debug("Command starts");
 
 		DBManager manager = DBManager.getInstance();
-		
+
 		String forward = Path.PAGE_ERROR_PAGE;
-		
+
 		int contractId = Integer.parseInt(request.getParameter("contractId"));
-		
+
 		Contract contract = manager.findContract(contractId);
 		Car car = manager.findCar(contract.getCarId());
 		Status status = null;
@@ -50,18 +50,18 @@ public class UpdateContractStatusCommand extends Command {
 			car.setDamage(Integer.parseInt(request.getParameter("damageValue")));
 			manager.updateCar(car);
 		}
-		
+
 		if (request.getParameter("close") != null) {
 			status = Status.CLOSED;
 			car.setDamage(0);
 			manager.updateCar(car);
 		}
-		
+
 		if (manager.updateContractStatus(status, contract.getId())) {
 			LOG.trace("Update contract status. contract -->" + contract);
 			forward = Path.COMMAND_LIST_ORDERS;
 		}
-		
+
 		LOG.debug("Command finished");
 		return forward;
 	}

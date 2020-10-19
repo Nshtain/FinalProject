@@ -1,5 +1,8 @@
 package kolesnick.SummaryTask.web.jstl;
 
+/**
+ * Custom tag
+ */
 import java.io.IOException;
 
 import javax.servlet.jsp.JspTagException;
@@ -16,16 +19,15 @@ public class BodyTag extends SimpleTagSupport {
 	public void setNum(int num) {
 		this.num = num;
 	}
+
 	@Override
 	public void doTag() throws JspTagException {
 		if (num % 4 == 0) {
-
 			try {
 				getJspContext().getOut().write("</TR><TR>");
 			} catch (IOException e) {
 				throw new JspTagException(e.getMessage());
 			}
 		}
-
 	}
 }

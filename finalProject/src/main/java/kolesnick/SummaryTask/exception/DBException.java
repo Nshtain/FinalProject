@@ -1,7 +1,7 @@
 package kolesnick.SummaryTask.exception;
 
 /**
- * An exception that provides information on an application error.
+ * An exception that provides information on a database access error.
  */
 public class DBException extends Exception {
 
@@ -18,5 +18,4 @@ public class DBException extends Exception {
 	public DBException(String message) {
 		super(message);
 	}
-
 }

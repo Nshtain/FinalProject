@@ -17,7 +17,7 @@ import kolesnick.SummaryTask.db.entity.Car;
 import kolesnick.SummaryTask.exception.DBException;
 
 /**
- * Lists menu items.
+ * Lists cars.
  */
 public class ListCarCommand extends Command {
 
@@ -26,18 +26,18 @@ public class ListCarCommand extends Command {
 	private static final Logger LOG = LogManager.getLogger(ListCarCommand.class);
 
 	@Override
-	public String execute(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ServletException, DBException {
-		
+	public String execute(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException, DBException {
+
 		LOG.debug("Command starts");
-		
-		// get menu items list
-		
+
+		// get cars list
+
 		DBManager manager = DBManager.getInstance();
 		List<Car> cars = manager.findCars();
 		LOG.trace("Found in DB: carsList --> " + cars);
-		
-		//filtered cars 
+
+		// filtered cars
 		String brand = request.getParameter("brand");
 		if (brand != null) {
 			List<Car> filtrCars = new ArrayList<Car>();
@@ -48,7 +48,7 @@ public class ListCarCommand extends Command {
 			}
 			cars = filtrCars;
 		}
-		
+
 		String clazz = request.getParameter("class");
 		if (clazz != null) {
 			List<Car> filtrCars = new ArrayList<Car>();
@@ -59,33 +59,33 @@ public class ListCarCommand extends Command {
 			}
 			cars = filtrCars;
 		}
-		
+
 		// sort cars
 		String sort = request.getParameter("sort");
-		if ("price".equals(sort)) {	
+		if ("price".equals(sort)) {
 			Collections.sort(cars, new Comparator<Car>() {
 				public int compare(Car o1, Car o2) {
-					return (int)(o1.getPrice() - o2.getPrice());
+					return (int) (o1.getPrice() - o2.getPrice());
 				}
-			});		
-		}else if ("brand".equals(sort)) {
+			});
+		} else if ("brand".equals(sort)) {
 			Collections.sort(cars, new Comparator<Car>() {
 				public int compare(Car o1, Car o2) {
-					return (int)(o1.getBrand().compareTo(o2.getBrand()));
+					return (int) (o1.getBrand().compareTo(o2.getBrand()));
 				}
-			});		
+			});
 		}
-		
+
 		int page = 0;
 		if (request.getParameter("page") != null) {
-			page = Integer.parseInt(request.getParameter("page"))-1;
+			page = Integer.parseInt(request.getParameter("page")) - 1;
 		}
-		request.setAttribute("page", page);	
-		
+		request.setAttribute("page", page);
+
 		// put car list to the request
-		request.setAttribute("cars", cars);		
+		request.setAttribute("cars", cars);
 		LOG.trace("Set the request attribute: cars --> " + cars);
-		
+
 		LOG.debug("Command finished");
 		return Path.PAGE_LIST_CARS;
 	}

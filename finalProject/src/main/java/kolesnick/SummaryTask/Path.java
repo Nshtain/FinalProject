@@ -4,7 +4,7 @@ package kolesnick.SummaryTask;
  * Path holder (jsp pages, controller commands).
  */
 public final class Path {
-	
+
 	// pages
 	public static final String PAGE_LOGIN = "/login.jsp";
 	public static final String PAGE_ERROR_PAGE = "/jsp/error_page.jsp";
@@ -17,7 +17,6 @@ public final class Path {
 	public static final String PAGE_USER_CONTRACT = "/jsp/client/contract.jsp";
 	public static final String PAGE_VIEW_BILL = "/jsp/client/bill.jsp";
 	public static final String PAGE_LIST_CLIENT = "/jsp/admin/clients.jsp";
-
 
 	// commands
 	public static final String COMMAND_LIST_ORDERS = "/controller?command=listOrders";

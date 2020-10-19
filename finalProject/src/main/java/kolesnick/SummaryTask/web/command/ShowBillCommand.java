@@ -34,13 +34,14 @@ public class ShowBillCommand extends Command {
 		Bill bill = new Bill();
 		Car car = manager.findCar(contract.getCarId());
 		double driverPrice = contract.isWithDriver() ? 100 * contract.getRentalTerm() : 0;
-		double totalPrice = (car.getPrice() * contract.getRentalTerm()) + (car.getDamage() * car.getPrice() / 100) + driverPrice;  
+		double totalPrice = (car.getPrice() * contract.getRentalTerm()) + (car.getDamage() * car.getPrice() / 100)
+				+ driverPrice;
 		if (contract.getStatus() == Status.DAMAGE) {
 			totalPrice = car.getDamage() * car.getPrice() / 100;
 		}
 		bill.setContractId(contract.getId());
 		bill.setTotalPrice(totalPrice);
-		
+
 		session.setAttribute("bill", bill);
 		LOG.trace("Set the request attribute: bill --> " + bill);
 

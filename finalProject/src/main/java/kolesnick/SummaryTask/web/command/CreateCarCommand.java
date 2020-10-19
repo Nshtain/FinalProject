@@ -19,14 +19,14 @@ public class CreateCarCommand extends Command {
 	private static final Logger LOG = LogManager.getLogger(CreateCarCommand.class);
 
 	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response) 
+	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException, DBException {
 		LOG.debug("Command starts");
 
 		DBManager manager = DBManager.getInstance();
-		
+
 		Car car = new Car();
-		
+
 		car.setBrand(request.getParameter("brand"));
 		car.setModel(request.getParameter("model"));
 		car.setType(request.getParameter("type"));

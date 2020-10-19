@@ -16,7 +16,7 @@ import kolesnick.SummaryTask.db.entity.User;
 import kolesnick.SummaryTask.exception.DBException;
 
 public class RegistrationCommand extends Command {
-	
+
 	private static final long serialVersionUID = 1048967190060021805L;
 	private static final Logger LOG = LogManager.getLogger(RegistrationCommand.class);
 
@@ -36,7 +36,7 @@ public class RegistrationCommand extends Command {
 		user.setAdress(request.getParameter("adress"));
 		user.setPasport(request.getParameter("pasport"));
 		user.setTel(Integer.parseInt(request.getParameter("tel")));
-		
+
 		String forward = Path.PAGE_ERROR_PAGE;
 
 		if (manager.updateUser(user)) {

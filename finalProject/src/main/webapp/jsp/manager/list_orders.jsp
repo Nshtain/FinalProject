@@ -71,7 +71,7 @@
 														<input type="hidden" name="contractId"
 															value="${contract.id}" />
 														<th></th>
-														<th><button name="confirm" value="confirm" type="submit">Close</button></th>
+														<th><button name="close" value="close" type="submit">Close</button></th>
 													</c:when>
 													<c:otherwise>
 													<th></th>

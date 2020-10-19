@@ -1,7 +1,10 @@
 package kolesnick.SummaryTask.db;
 
+/**
+ * DB manager. Works with MySQL DB.
+ * 
+ */
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +19,6 @@ import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.message.Message;
 
 import kolesnick.SummaryTask.db.entity.Bill;
 import kolesnick.SummaryTask.db.entity.Car;
@@ -27,7 +29,7 @@ import kolesnick.SummaryTask.exception.Messages;
 
 public final class DBManager {
 
-	private static final Logger LOG = LogManager.getLogger();
+	private static final Logger LOG = LogManager.getLogger(DBManager.class);
 
 	// //////////////////////////////////////////////////////////
 	// singleton
@@ -61,41 +63,24 @@ public final class DBManager {
 	// //////////////////////////////////////////////////////////
 
 	private static final String SQL_FIND_USER_BY_LOGIN = "SELECT * FROM user WHERE login=?";
-
-	private static final String SQL_FIND_ALL_CONTRACTS = "SELECT * FROM contract";
-
 	private static final String SQL_FIND_USER_BY_ID = "SELECT * FROM user WHERE id=?";
-
-	private static final String SQL_FIND_ALL_CARS = "SELECT * FROM car";
-
-	private static final String SQL_FIND_CAR_BY_ID = "SELECT * FROM car WHERE id=?";
-
-	private static final String SQL_FIND_ORDERS_BY_STATUS_AND_USER = "SELECT * FROM orders WHERE status_id=? AND user_id=?";
-
-	private static final String SQL_CREATE_CONTRACT = "INSERT INTO `contract` (`rental_term`, `car_id`, `with_driver`, `user_id`, `status_id`) VALUES (?, ?, ?, ?, ?)";
-
-	private static final String SQL_FIND_ORDERS_BY_STATUS = "SELECT * FROM orders WHERE status_id=?";
-
-	private static final String SQL_CREATE_CAR = "INSERT INTO `car` (`brand`, `model`, `type`, `image`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-
-	private static final String SQL_UPDATE_USER = "UPDATE user SET user_firstname=?, user_name=?, user_lastname=?, adress=?, pasport=?, tel=?, blocked=?"
-			+ "	WHERE id=?";
-
-	private static final String SQL_FIND_CONTRACT_BY_USER = "SELECT * FROM contract WHERE user_id=?";
-
-	private static final String SQL_FIND_CONTRACT_BY_CONTRACT_ID = "SELECT * FROM contract WHERE id=?";
-
-	private static final String SQL_UPDATE_CONTRACT_STATUS_BY_CONTRACT_ID = "UPDATE contract SET status_id=? WHERE id=?";
-
-	private static final String SQL_CREATE_BILL = "INSERT INTO `bill` (`total_price`, `contract_id`) VALUES (?, ?);";
-
-	private static final String SQL_DELETE_CAR_BY_ID = "DELETE FROM car WHERE id = ?";
-
-	private static final String SQL_UPDATE_CAR = "UPDATE car SET brand=?, model=?, type=?, image=?, ear_of_issue=?, quality_class=?, price=?, rentered=?, damage=? WHERE id=?;";
-
+	private static final String SQL_UPDATE_USER = "UPDATE user SET user_firstname=?, user_name=?, user_lastname=?, adress=?, pasport=?, tel=?, blocked=? WHERE id=?";
+	private static final String SQL_FIND_USER_CLIENT = "SELECT * FROM user WHERE role_id = 3";
 	private static final String SQL_CREATE_USER = "INSERT INTO user (login, password, adress, user_name, user_firstname, user_lastname, pasport, tel, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
-	private static final String SQL_FIND_USER_CLIENT = "SELECT * FROM user WHERE role_id = 3";
+	private static final String SQL_FIND_ALL_CONTRACTS = "SELECT * FROM contract";
+	private static final String SQL_CREATE_CONTRACT = "INSERT INTO `contract` (`rental_term`, `car_id`, `with_driver`, `user_id`, `status_id`) VALUES (?, ?, ?, ?, ?)";
+	private static final String SQL_FIND_CONTRACT_BY_USER = "SELECT * FROM contract WHERE user_id=?";
+	private static final String SQL_FIND_CONTRACT_BY_CONTRACT_ID = "SELECT * FROM contract WHERE id=?";
+	private static final String SQL_UPDATE_CONTRACT_STATUS_BY_CONTRACT_ID = "UPDATE contract SET status_id=? WHERE id=?";
+
+	private static final String SQL_FIND_ALL_CARS = "SELECT * FROM car";
+	private static final String SQL_UPDATE_CAR = "UPDATE car SET brand=?, model=?, type=?, image=?, ear_of_issue=?, quality_class=?, price=?, rentered=?, damage=? WHERE id=?;";
+	private static final String SQL_DELETE_CAR_BY_ID = "DELETE FROM car WHERE id = ?";
+	private static final String SQL_FIND_CAR_BY_ID = "SELECT * FROM car WHERE id=?";
+	private static final String SQL_CREATE_CAR = "INSERT INTO `car` (`brand`, `model`, `type`, `image`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+	private static final String SQL_CREATE_BILL = "INSERT INTO `bill` (`total_price`, `contract_id`) VALUES (?, ?);";
 
 	/**
 	 * Returns a DB connection from the Pool Connections. Before using this method
@@ -119,6 +104,9 @@ public final class DBManager {
 	// Entity access methods
 	// //////////////////////////////////////////////////////////
 
+	// //////////////////////////////////////////////////////////
+	// Car
+	// //////////////////////////////////////////////////////////
 	/**
 	 * Returns all cars.
 	 * 
@@ -146,9 +134,12 @@ public final class DBManager {
 		}
 		return carsList;
 	}
-	
-	
 
+	/**
+	 * Create new car.
+	 * 
+	 * @return true if create car.
+	 */
 	public boolean addNewCar(Car car) throws DBException {
 		Connection con = null;
 		try {
@@ -165,27 +156,11 @@ public final class DBManager {
 		return true;
 	}
 
-	private void addNewCar(Connection con, Car car) throws SQLException {
-		PreparedStatement pstmt = null;
-		try {
-			pstmt = con.prepareStatement(SQL_CREATE_CAR);
-			int k = 1;
-			pstmt.setString(k++, car.getBrand());
-			pstmt.setString(k++, car.getModel());
-			pstmt.setString(k++, car.getType());
-			pstmt.setString(k++, car.getImage());
-			pstmt.setInt(k++, car.getEarOfIssue());
-			pstmt.setString(k++, car.getQualityClass());
-			pstmt.setDouble(k++, car.getPrice());
-			pstmt.setBoolean(k++, car.isRentered());
-			pstmt.setInt(k, car.getDamage());
-
-			pstmt.executeUpdate();
-		} finally {
-			close(pstmt);
-		}
-	}
-
+	/**
+	 * Find car by carId.
+	 * 
+	 * @return found car.
+	 */
 	public Car findCar(int carId) throws DBException {
 		Car car = new Car();
 		PreparedStatement pstmt = null;
@@ -209,7 +184,12 @@ public final class DBManager {
 		}
 		return car;
 	}
-	
+
+	/**
+	 * Delete car by id.
+	 * 
+	 * @return true if delete car.
+	 */
 	public boolean deleteCar(int carId) throws DBException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -229,8 +209,12 @@ public final class DBManager {
 		}
 		return true;
 	}
-	
 
+	/**
+	 * Update car.
+	 * 
+	 * @return true if update car.
+	 */
 	public boolean updateCar(Car car) throws DBException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -260,6 +244,10 @@ public final class DBManager {
 		}
 		return true;
 	}
+
+	// //////////////////////////////////////////////////////////
+	// User
+	// //////////////////////////////////////////////////////////
 
 	/**
 	 * Returns a user with the given identifier.
@@ -342,8 +330,14 @@ public final class DBManager {
 		}
 		return true;
 	}
-	
-	
+
+	/**
+	 * Create user.
+	 * 
+	 * @param user user to create.
+	 * @return true if create
+	 * @throws DBException
+	 */
 	public boolean createUser(User user) throws DBException {
 		Connection con = null;
 		try {
@@ -358,8 +352,13 @@ public final class DBManager {
 		}
 		return true;
 	}
-	
 
+	/**
+	 * Find all users with role = client.
+	 * 
+	 * @return list users
+	 * @throws DBException
+	 */
 	public List<User> getAllClient() throws DBException {
 		List<User> clients = new ArrayList<User>();
 		PreparedStatement pstmt = null;
@@ -369,7 +368,7 @@ public final class DBManager {
 			con = getConnection();
 			pstmt = con.prepareStatement(SQL_FIND_USER_CLIENT);
 			rs = pstmt.executeQuery();
-			if (rs.next()) {
+			while (rs.next()) {
 				clients.add(extractUser(rs));
 			}
 			con.commit();
@@ -382,7 +381,17 @@ public final class DBManager {
 		return clients;
 	}
 
+	// //////////////////////////////////////////////////////////
+	// Contract
+	// //////////////////////////////////////////////////////////
 
+	/**
+	 * Create contract.
+	 * 
+	 * @param contract contract to create.
+	 * @return true if create
+	 * @throws DBException
+	 */
 	public boolean createContract(Contract contract) throws DBException {
 		Connection con = null;
 		try {
@@ -397,7 +406,14 @@ public final class DBManager {
 		}
 		return true;
 	}
-	
+
+	/**
+	 * Find contract by id.
+	 * 
+	 * @param contractId contracts id.
+	 * @return Contract contract
+	 * @throws DBException
+	 */
 	public Contract findContract(int contractId) throws DBException {
 		Contract contract = new Contract();
 		PreparedStatement pstmt = null;
@@ -422,7 +438,12 @@ public final class DBManager {
 		return contract;
 	}
 
-
+	/**
+	 * Find all contracts.
+	 * 
+	 * @return list contracts
+	 * @throws DBException
+	 */
 	public List<Contract> getAllContracts() throws DBException {
 		List<Contract> contractsList = new ArrayList<Contract>();
 		PreparedStatement pstmt = null;
@@ -446,21 +467,12 @@ public final class DBManager {
 		return contractsList;
 	}
 
-	public boolean addBill(Bill bill) throws DBException {
-		Connection con = null;
-		try {
-			con = getConnection();
-			addBill(con, bill);
-			con.commit();
-		} catch (SQLException ex) {
-			rollback(con);
-			throw new DBException(Messages.ERR_CANNOT_CREATE_BILL, ex);
-		} finally {
-			close(con);
-		}
-		return true;
-	}
-
+	/**
+	 * Update contracts status.
+	 * 
+	 * @return true if update.
+	 * @throws DBException
+	 */
 	public boolean updateContractStatus(Status status, int contractId) throws DBException {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -478,96 +490,6 @@ public final class DBManager {
 			close(con, pstmt, rs);
 		}
 		return true;
-	}
-
-	// //////////////////////////////////////////////////////////
-	// Entity access methods (for transactions)
-	// //////////////////////////////////////////////////////////
-
-	private void addBill(Connection con, Bill bill) throws SQLException {
-		PreparedStatement pstmt = null;
-		try {
-			pstmt = con.prepareStatement(SQL_CREATE_BILL);
-			int k = 1;
-			pstmt.setDouble(k++, bill.getTotalPrice());
-			pstmt.setInt(k, bill.getContractId());
-			LOG.trace(pstmt);
-
-			pstmt.executeUpdate();
-		} finally {
-			close(pstmt);
-		}
-	}
-
-	/**
-	 * Update user.
-	 * 
-	 * @param user user to update.
-	 * @throws SQLException
-	 */
-	private void updateUser(Connection con, User user) throws SQLException {
-		PreparedStatement pstmt = null;
-		try {
-			pstmt = con.prepareStatement(SQL_UPDATE_USER);
-			int k = 1;
-			pstmt.setString(k++, user.getFirstname());
-			pstmt.setString(k++, user.getName());
-			pstmt.setString(k++, user.getLastname());
-			pstmt.setString(k++, user.getAdress());
-			pstmt.setString(k++, user.getPasport());
-			pstmt.setInt(k++, user.getTel());
-			pstmt.setBoolean(k++, user.isBlocked());
-			pstmt.setInt(k, user.getId());
-
-			pstmt.executeUpdate();
-		} finally {
-			close(pstmt);
-		}
-	}
-
-	private void createUser(Connection con, User user) throws SQLException {
-		PreparedStatement pstmt = null;
-		try {
-			pstmt = con.prepareStatement(SQL_CREATE_USER);
-			int k = 1;
-			pstmt.setString(k++, user.getLogin());
-			pstmt.setString(k++, user.getPassword());
-			pstmt.setString(k++, user.getAdress());
-			pstmt.setString(k++, user.getName());
-			pstmt.setString(k++, user.getFirstname());
-			pstmt.setString(k++, user.getLastname());
-			pstmt.setString(k++, user.getPasport());
-			pstmt.setInt(k++, user.getTel());
-			pstmt.setInt(k, user.getRoleId());
-
-			pstmt.executeUpdate();
-		} finally {
-			close(pstmt);
-		}
-	}
-
-	/**
-	 * Create contract.
-	 * 
-	 * @param con  connection
-	 * @param car  car from order
-	 * @param user user who make order
-	 * @throws SQLException
-	 */
-	private void createContract(Connection con, Contract contract) throws SQLException {
-		PreparedStatement pstmt = null;
-		try {
-			pstmt = con.prepareStatement(SQL_CREATE_CONTRACT);
-			int k = 1;
-			pstmt.setInt(k++, contract.getRentalTerm());
-			pstmt.setInt(k++, contract.getCarId());
-			pstmt.setBoolean(k++, contract.isWithDriver());
-			pstmt.setInt(k++, contract.getUserId());
-			pstmt.setInt(k, contract.getStatus().ordinal() + 1);
-			pstmt.executeUpdate();
-		} finally {
-			close(pstmt);
-		}
 	}
 
 	public List<Contract> findUserContract(User user) throws DBException {
@@ -616,6 +538,159 @@ public final class DBManager {
 			close(con, pstmt, rs);
 		}
 		return contract;
+	}
+
+	// //////////////////////////////////////////////////////////
+	// Bill
+	// //////////////////////////////////////////////////////////
+
+	/**
+	 * Create bill.
+	 * 
+	 * @param bill bill to create.
+	 * @return true if create.
+	 * @throws DBException
+	 */
+	public boolean addBill(Bill bill) throws DBException {
+		Connection con = null;
+		try {
+			con = getConnection();
+			addBill(con, bill);
+			con.commit();
+		} catch (SQLException ex) {
+			rollback(con);
+			throw new DBException(Messages.ERR_CANNOT_CREATE_BILL, ex);
+		} finally {
+			close(con);
+		}
+		return true;
+	}
+
+	// //////////////////////////////////////////////////////////
+	// Entity access methods (for transactions)
+	// //////////////////////////////////////////////////////////
+
+	// //////////////////////////////////////////////////////////
+	// Car
+	// //////////////////////////////////////////////////////////
+
+	private void addNewCar(Connection con, Car car) throws SQLException {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = con.prepareStatement(SQL_CREATE_CAR);
+			int k = 1;
+			pstmt.setString(k++, car.getBrand());
+			pstmt.setString(k++, car.getModel());
+			pstmt.setString(k++, car.getType());
+			pstmt.setString(k++, car.getImage());
+			pstmt.setInt(k++, car.getEarOfIssue());
+			pstmt.setString(k++, car.getQualityClass());
+			pstmt.setDouble(k++, car.getPrice());
+			pstmt.setBoolean(k++, car.isRentered());
+			pstmt.setInt(k, car.getDamage());
+
+			pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+	}
+
+	// //////////////////////////////////////////////////////////
+	// User
+	// //////////////////////////////////////////////////////////
+
+	/**
+	 * Update user.
+	 * 
+	 * @param user user to update.
+	 * @throws SQLException
+	 */
+	private void updateUser(Connection con, User user) throws SQLException {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = con.prepareStatement(SQL_UPDATE_USER);
+			int k = 1;
+			pstmt.setString(k++, user.getFirstname());
+			pstmt.setString(k++, user.getName());
+			pstmt.setString(k++, user.getLastname());
+			pstmt.setString(k++, user.getAdress());
+			pstmt.setString(k++, user.getPasport());
+			pstmt.setInt(k++, user.getTel());
+			pstmt.setBoolean(k++, user.isBlocked());
+			pstmt.setInt(k, user.getId());
+
+			pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+	}
+
+	private void createUser(Connection con, User user) throws SQLException {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = con.prepareStatement(SQL_CREATE_USER);
+			int k = 1;
+			pstmt.setString(k++, user.getLogin());
+			pstmt.setString(k++, user.getPassword());
+			pstmt.setString(k++, user.getAdress());
+			pstmt.setString(k++, user.getName());
+			pstmt.setString(k++, user.getFirstname());
+			pstmt.setString(k++, user.getLastname());
+			pstmt.setString(k++, user.getPasport());
+			pstmt.setInt(k++, user.getTel());
+			pstmt.setInt(k, user.getRoleId());
+
+			pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+	}
+
+	// //////////////////////////////////////////////////////////
+	// Contract
+	// //////////////////////////////////////////////////////////
+
+	/**
+	 * Create contract.
+	 * 
+	 * @param con  connection
+	 * @param car  car from order
+	 * @param user user who make order
+	 * @throws SQLException
+	 */
+	private void createContract(Connection con, Contract contract) throws SQLException {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = con.prepareStatement(SQL_CREATE_CONTRACT);
+			int k = 1;
+			pstmt.setInt(k++, contract.getRentalTerm());
+			pstmt.setInt(k++, contract.getCarId());
+			pstmt.setBoolean(k++, contract.isWithDriver());
+			pstmt.setInt(k++, contract.getUserId());
+			pstmt.setInt(k, contract.getStatus().ordinal() + 1);
+			pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
+	}
+
+	// //////////////////////////////////////////////////////////
+	// Bill
+	// //////////////////////////////////////////////////////////
+
+	private void addBill(Connection con, Bill bill) throws SQLException {
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = con.prepareStatement(SQL_CREATE_BILL);
+			int k = 1;
+			pstmt.setDouble(k++, bill.getTotalPrice());
+			pstmt.setInt(k, bill.getContractId());
+			LOG.trace(pstmt);
+
+			pstmt.executeUpdate();
+		} finally {
+			close(pstmt);
+		}
 	}
 
 	// //////////////////////////////////////////////////////////
@@ -690,19 +765,6 @@ public final class DBManager {
 	// //////////////////////////////////////////////////////////
 	// Other methods
 	// //////////////////////////////////////////////////////////
-	/**
-	 * Extracts a bill from the result set.
-	 * 
-	 * @param rs Result set from which a bill entity will be extracted.
-	 * @return Bill object
-	 */
-	private Bill extractBill(ResultSet rs) throws SQLException {
-		Bill bill = new Bill();
-		bill.setId(rs.getInt(Fields.ENTITY_ID));
-		bill.setTotalPrice(rs.getDouble(Fields.BILL_TOTAL_PRICE));
-		bill.setContractId(rs.getInt(Fields.BILL_CONTRACT_ID));
-		return bill;
-	}
 
 	/**
 	 * Extracts a contract from the result set.

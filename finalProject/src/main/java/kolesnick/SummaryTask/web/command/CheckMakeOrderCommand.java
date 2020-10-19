@@ -1,4 +1,5 @@
 package kolesnick.SummaryTask.web.command;
+/**Check can user make order**/
 
 import java.io.IOException;
 
@@ -19,7 +20,7 @@ public class CheckMakeOrderCommand extends Command {
 	private static final Logger LOG = LogManager.getLogger(CheckMakeOrderCommand.class);
 
 	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response) 
+	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException, DBException {
 		LOG.debug("Command starts");
 
@@ -28,9 +29,10 @@ public class CheckMakeOrderCommand extends Command {
 
 		if (session.getAttribute("user") != null) {
 			forward = Path.PAGE_REGISTRATION;
+			LOG.trace("Set the session attribute: carId --> " + request.getParameter("carId"));
 			session.setAttribute("carId", request.getParameter("carId"));
 		}
-		
+
 		LOG.debug("Command finished");
 		return forward;
 	}

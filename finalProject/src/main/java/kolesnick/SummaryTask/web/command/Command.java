@@ -19,9 +19,8 @@ public abstract class Command implements Serializable {
 	 * 
 	 * @return Address to go once the command is executed.
 	 */
-	public abstract String execute(HttpServletRequest request,
-			HttpServletResponse response) throws IOException, ServletException,
-			DBException;
+	public abstract String execute(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException, DBException;
 
 	@Override
 	public final String toString() {
