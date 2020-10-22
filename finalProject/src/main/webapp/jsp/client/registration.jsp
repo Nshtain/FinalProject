@@ -3,7 +3,8 @@
 
 <html>
 
-<c:set var="title" value="Registration" scope="page" />
+<fmt:message key="registration" var="reg" />
+<c:set var="title" value="${reg}" />
 <%@ include file="/jspf/head.jspf"%>
 
 <body>
@@ -14,7 +15,8 @@
 		<tr>
 			<td class="content center">
 				<%-- CONTENT --%>
-				<h2>Insert info</h2>
+				<h2><fmt:message key="insertInfo"/>
+				</h2>
 
 				<form id="login_form"
 					action="${pageContext.request.contextPath}/controller"
@@ -22,7 +24,8 @@
 					<input type="hidden" name="command" value="registration" />
 
 					<fieldset>
-						<legend>First name</legend>
+						<legend><fmt:message key="firstName"/>
+						</legend>
 						<c:choose>
 							<c:when test="${user.firstname == null}">
 								<input name="firstname" value="" required>
@@ -35,7 +38,7 @@
 					</fieldset>
 					<br />
 					<fieldset>
-						<legend>Name</legend>
+						<legend><fmt:message key="name"/></legend>
 						<c:choose>
 							<c:when test="${user.name == null}">
 								<input name="name" value="" required>
@@ -49,7 +52,7 @@
 					<br />
 					
 					<fieldset>
-						<legend>Last name</legend>
+						<legend><fmt:message key="lastName"/></legend>
 						<c:choose>
 							<c:when test="${user.lastname == null}">
 								 <input name="lastname" value="" required>
@@ -64,7 +67,7 @@
 					<br />
 					
 					<fieldset>
-						<legend>Adress</legend>
+						<legend><fmt:message key="adress"/></legend>
 						<c:choose>
 							<c:when test="${user.adress == null}">
 								 <input name="adress" value="" required>
@@ -78,7 +81,7 @@
 					<br />
 					
 					<fieldset>
-						<legend>Pasport</legend>
+						<legend><fmt:message key="pasport"/></legend>
 						<c:choose>
 							<c:when test="${user.pasport == null}">
 								 <input name="pasport" value="" required>
@@ -91,7 +94,7 @@
 					</fieldset>
 					<br />
 					<fieldset>
-						<legend>Telephone</legend>
+						<legend><fmt:message key="telephone"/></legend>
 						<c:choose>
 							<c:when test="${user.tel == null}">
 								 <input name="tel" value="" required>
@@ -104,8 +107,8 @@
 					</fieldset>
 					<br />
 					<br />
-					
-					<input type="submit" value="Add info"><br />
+					<fmt:message key="addInfo" var = "addInf"/>
+					<input type="submit" value="${addInf}"><br />
 				</form> <%-- CONTENT --%>
 			</td>
 		</tr>

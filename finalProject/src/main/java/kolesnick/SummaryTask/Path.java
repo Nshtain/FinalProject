@@ -10,7 +10,6 @@ public final class Path {
 	public static final String PAGE_ERROR_PAGE = "/jsp/error_page.jsp";
 	public static final String PAGE_LIST_CARS = "/jsp/client/list_cars.jsp";
 	public static final String PAGE_LIST_ORDERS = "/jsp/manager/list_orders.jsp";
-	public static final String PAGE_SETTINGS = "/jsp/settings.jsp";
 	public static final String PAGE_CREATE_CAR = "/jsp/admin/addNewCar.jsp";
 	public static final String PAGE_REGISTRATION = "/jsp/client/registration.jsp";
 	public static final String PAGE_MAKE_ORDER = "/jsp/client/makeOrder.jsp";

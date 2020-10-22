@@ -12,7 +12,6 @@ import org.apache.logging.log4j.Logger;
 import kolesnick.SummaryTask.Path;
 import kolesnick.SummaryTask.db.DBManager;
 import kolesnick.SummaryTask.db.Role;
-import kolesnick.SummaryTask.db.entity.Car;
 import kolesnick.SummaryTask.db.entity.User;
 import kolesnick.SummaryTask.exception.DBException;
 

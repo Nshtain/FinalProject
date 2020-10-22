@@ -6,7 +6,8 @@
 
 <html>
 
-<c:set var="title" value="Contract" scope="page" />
+<fmt:message key="contract" var="contr" />
+<c:set var="title" value="${contr}" />
 <%@ include file="/jspf/head.jspf"%>
 
 <body>
@@ -22,13 +23,13 @@
 						<td>
 							<table id="list_order_table">
 								<tr>
-									<th>#</th>
-									<th>car id</th>
-									<th>user id</th>
-									<th>rental term</th>
-									<th>driver</th>
-									<th>status</th>
-									<th>action</th>
+									<td><b>#</b></td>
+									<td><b><fmt:message key="car"/></b></td>
+									<td><b><fmt:message key="user"/></b></td>
+									<td><b><fmt:message key="rentalTerm"/></b></td>
+									<td><b><fmt:message key="driver"/></b></td>
+									<td><b><fmt:message key="status"/></b></td>
+									<td><b><fmt:message key="action"/></b></td>
 								</tr>
 							</table>
 						</td>
@@ -38,7 +39,7 @@
 						<c:set var="k" value="${k+1}" />
 						<tr>
 							<td>
-								<form id="pay_bill" action="controller" method="post">
+								<form id="pay_bill" action="${pageContext.request.contextPath}/controller" method="post">
 									<input type="hidden" name="command" value="showBill" />
 									<table id="list_order_table">
 										<tr>
@@ -52,13 +53,14 @@
 													<c:when test="${contract.status == 'CONFIRMED' || contract.status == 'DAMAGE'}">
 														<input type="hidden" name="contractId"
 															value="${contract.id}" />
-														<input type="submit" value="Pay" />
+															<fmt:message key="pay" var="pay"/>
+														<input type="submit" value="${pay}" />
 													</c:when>
 													<c:when test="${contract.status == 'DECLINED'}">
 														${contract.status.getDescription()}	
 													</c:when>
 													<c:when test="${contract.status == 'NEW'}">
-														Wait for confirmation
+														<fmt:message key="waitForConfirmation"/>
 													</c:when>
 												</c:choose></td>
 										</tr>

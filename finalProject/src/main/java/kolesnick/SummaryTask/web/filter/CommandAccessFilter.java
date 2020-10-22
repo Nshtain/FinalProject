@@ -115,7 +115,6 @@ public class CommandAccessFilter implements Filter {
 		outOfControl = asList(fConfig.getInitParameter("out-of-control"));
 		outOfControl.add("listCars");
 		outOfControl.add("checkMakeOrder");
-		outOfControl.add("viewSettings");
 		LOG.trace("Out of control commands --> " + outOfControl);
 
 		LOG.debug("Filter initialization finished");

@@ -6,7 +6,8 @@
 
 <html>
 
-<c:set var="title" value="Cars" scope="page" />
+<fmt:message key="cars" var="Сars" />
+<c:set var="title" value="${Сars}" />
 <%@ include file="/jspf/head.jspf"%>
 
 
@@ -21,27 +22,27 @@
 				<table id="filters">
 					<tr>
 						<td><div class="dropdown">
-								<button class="dropbtn">Sort</button>
+								<button class="dropbtn"><fmt:message key="sort"/></button>
 								<div class="dropdown-content">
-									<a href="?command=listCars&sort=price">Price</a> <a
-										href="?command=listCars&sort=brand">Brand</a>
+									<a href="${pageContext.request.contextPath}/controller?command=listCars&sort=price"><fmt:message key="price"/></a>
+									<a href="${pageContext.request.contextPath}/controller?command=listCars&sort=brand"><fmt:message key="brand"/></a>
 								</div>
 							</div></td>
-						<td><h3>Filters</h3></td>
+						<td><h3><fmt:message key="filters"/></h3></td>
 						<td><div class="dropdown">
-								<button class="dropbtn">Brand</button>
+								<button class="dropbtn"><fmt:message key="brand"/></button>
 								<div class="dropdown-content">
-									<a href="?command=listCars&brand=audi">Audi</a> <a
-										href="?command=listCars&brand=bmw">BMW</a> <a
-										href="?command=listCars&brand=tesla">Tesla</a>
+									<a href="${pageContext.request.contextPath}/controller?command=listCars&brand=audi">Audi</a> <a
+										href="${pageContext.request.contextPath}/controller?command=listCars&brand=bmw">BMW</a> <a
+										href="${pageContext.request.contextPath}/controller?command=listCars&brand=tesla">Tesla</a>
 								</div>
 							</div>
 							<div class="dropdown">
-								<button class="dropbtn">Quality Class</button>
+								<button class="dropbtn"><fmt:message key="qualityClass"/></button>
 								<div class="dropdown-content">
-									<a href="?command=listCars&class=elita">Elit</a> <a
-										href="?command=listCars&class=econom">Econom</a> <a
-										href="?command=listCars&class=norm">Norm</a>
+									<a href="${pageContext.request.contextPath}/controller?command=listCars&class=elita"><fmt:message key="elit"/></a> <a
+										href="${pageContext.request.contextPath}/controller?command=listCars&class=econom"><fmt:message key="econom"/></a> <a
+										href="${pageContext.request.contextPath}/controller?command=listCars&class=norm"><fmt:message key="norm"/></a>
 								</div>
 							</div></td>
 					</tr>
@@ -53,7 +54,7 @@
 						<c:forEach begin="${page*12}" end="${page*12+12-1}" var="i">
 							<c:if test="${i < cars.size()}">
 								<td>
-									<form id="make_order" action="controller" method="post">
+									<form id="make_order" action="${pageContext.request.contextPath}/controller" method="post">
 										<input type="hidden" name="command" value="checkMakeOrder" />
 
 										<div class="card">
@@ -61,16 +62,17 @@
 												src="${pageContext.request.contextPath}/img/${cars[i].image}">
 											<h2>${cars[i].brand} ${cars[i].model}</h2>
 											<p class="price">${cars[i].price}</p>
-											<p>Некоторый текст о машине..</p>
+											<p><fmt:message key="someText"/></p>
 											<c:choose>
 												<c:when test="${userRole.name == 'admin'}">
 													<c:set var="cars" value="${cars}" scope="session" />
-													<a href="jsp/admin/updateCar.jsp?i=${i}">Update</a>
-													<a href="?command=deleteCar&carId=${cars[i].id}">Delete</a>
+													<a href="${pageContext.request.contextPath}/jsp/admin/updateCar.jsp?i=${i}"><fmt:message key="update"/></a>
+													<a href="?command=deleteCar&carId=${cars[i].id}"><fmt:message key="delete"/></a>
 												</c:when>
 												<c:otherwise>
 													<input type="hidden" name="carId" value="${cars[i].id}" />
-													<input type="submit" value="buy">
+													<fmt:message key="buy" var = "buy"/>
+													<input type="submit" value="${buy}">
 												</c:otherwise>
 											</c:choose>
 
@@ -97,10 +99,14 @@
 										<c:if test="${entry.key != 'page'}">
 											<c:param name="${entry.key}" value="${entry.value}" />
 										</c:if>
+										
 									</c:forEach>
+									<c:if test="${!param.containsKey('command')}">
+											<c:param name="command" value="listCars" />
+									</c:if>
 								</c:url>
 								<c:forEach begin="1" end="${count}" var="i">
-									<li><a href="${myURL}page=${i}">${i}</a></li>
+									<li><a href="${pageContext.request.contextPath}/controller${myURL}page=${i}">${i}</a></li>
 								</c:forEach>
 							</ul>
 						</td>

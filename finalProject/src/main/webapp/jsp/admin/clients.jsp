@@ -4,7 +4,8 @@
 
 <html>
 
-<c:set var="title" value="Clients" scope="page" />
+<fmt:message key="clients" var="cliens" />
+<c:set var="title" value="${cliens}" />
 <%@ include file="/jspf/head.jspf" %>
 
 <body>
@@ -21,13 +22,13 @@
 						<td>
 							<table id="list_order_table">
 								<tr>
-									<th>#</th>
-									<th>user id</th>
-									<th>login</th>
-									<th>First name</th>
-									<th>Name</th>
-									<th>Last name</th>
-									<th>Status</th>
+									<td>#</td>
+									<td><fmt:message key="user"/></td>
+									<td><fmt:message key="login"/></td>
+									<td><fmt:message key="firstName"/></td>
+									<td><fmt:message key="name"/></td>
+									<td><fmt:message key="lastName"/></td>
+									<td><fmt:message key="status"/></td>
 								</tr>
 							</table>
 						</td>
@@ -37,7 +38,7 @@
 						<c:set var="k" value="${k+1}" />
 						<tr>
 							<td>
-								<form id="pay_bill" action="controller" method="post">
+								<form id="pay_bill" action="${pageContext.request.contextPath}/controller" method="post">
 									<input type="hidden" name="command" value="updateClientStatus" />
 									<table id="list_order_table">
 										<tr>
@@ -51,11 +52,13 @@
 													<c:when test="${client.blocked}">
 														<input type="hidden" name="clientId"
 															value="${client.id}" />
-														<input type="submit" value="Unblock" />
+															<fmt:message key="unblock" var="un"/>
+														<input type="submit" value="${un}" />
 													</c:when>
 													<c:otherwise>
 														<input type="hidden" name="clientId" value="${client.id}" />
-														<input type="submit" value="Block" />							
+														<fmt:message key="block" var="block"/>
+														<input type="submit" value="${block}" />							
 													</c:otherwise>
 												</c:choose></td>
 										</tr>

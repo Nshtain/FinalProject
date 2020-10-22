@@ -41,7 +41,7 @@ public class UserContractCommand extends Command {
 				return (int) (o1.getStatus().ordinal() - o2.getStatus().ordinal());
 			}
 		});
-		request.setAttribute("contracts", contracts);
+		session.setAttribute("contracts", contracts);
 		LOG.debug("Command finished");
 		return Path.PAGE_USER_CONTRACT;
 	}

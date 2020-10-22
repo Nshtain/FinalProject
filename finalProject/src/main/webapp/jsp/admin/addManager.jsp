@@ -3,7 +3,8 @@
 
 <html>
 
-<c:set var="title" value="Add manager" scope="page" />
+<fmt:message key="addNewManager" var="addManag" />
+<c:set var="title" value="${addManag}" />
 <%@ include file="/jspf/head.jspf"%>
 
 <body>
@@ -14,7 +15,7 @@
 		<tr>
 			<td class="content center">
 				<%-- CONTENT --%>
-				<h2>Insert info</h2>
+				<h2><fmt:message key="insertInfo"/></h2>
 
 				<form id="login_form"
 					action="${pageContext.request.contextPath}/controller"
@@ -22,48 +23,50 @@
 					<input type="hidden" name="command" value="addManager" />
 
 					<fieldset>
-						<legend>Login</legend>
+						<legend><fmt:message key="login"/></legend>
 						<input name="login" value="" required> <br />
 					</fieldset>
 					<br />
 					<fieldset>
-						<legend>Password</legend>
+						<legend><fmt:message key="password"/></legend>
 						<input name="password" value="" required> <br />
 					</fieldset>
 					<br />
 					<fieldset>
-						<legend>First name</legend>
+						<legend><fmt:message key="firstName"/></legend>
 						<input name="firstname" value="" required> <br />
 					</fieldset>
 					<br />
 					<fieldset>
-						<legend>Name</legend>
+						<legend><fmt:message key="name"/></legend>
 						<input name="name" value="" required> <br />
 					</fieldset>
 					<br />
 
 					<fieldset>
-						<legend>Last name</legend>
+						<legend><fmt:message key="lastName"/></legend>
 						<input name="lastname" value="" required> <br />
 					</fieldset>
 					<br />
 
 					<fieldset>
-						<legend>Adress</legend>
+						<legend><fmt:message key="adress"/></legend>
 						<input name="adress" value="" required> <br />
 					</fieldset>
 					<br />
 
 					<fieldset>
-						<legend>Pasport</legend>
+						<legend><fmt:message key="pasport"/></legend>
 						<input name="pasport" value="" required> <br />
 					</fieldset>
 					<br />
 					<fieldset>
-						<legend>Telephone</legend>
+						<legend><fmt:message key="telephone"/></legend>
 						<input name="tel" value="" required> <br />
 					</fieldset>
-					<br /> <br /> <input type="submit" value="Add manager"><br />
+					<br /> <br /> 
+					
+					<input type="submit" value="${addManag}"><br />
 				</form> <%-- CONTENT --%>
 			</td>
 		</tr>

@@ -3,7 +3,8 @@
 
 <html>
 
-<c:set var="title" value="Make order" />
+<fmt:message key="makeOrder" var="makeOrdr" />
+<c:set var="title" value="${makeOrdr}" />
 <%@ include file="/jspf/head.jspf"%>
 
 <body>
@@ -35,18 +36,18 @@ This is the CONTENT, containing the main part of the page.
 					<input type="hidden" name="command" value="makeOrder" />
 
 					<fieldset>
-						<legend>Driver</legend>
+						<legend><fmt:message key="withDriver"/></legend>
 						<br /> <select id="driver" name="driver">
-							<option value="true">Yes</option>
-							<option value="false">No</option>
+							<option value="true"><fmt:message key="yes"/></option>
+							<option value="false"><fmt:message key="no"/></option>
 						</select>
 					</fieldset>
 					<br />
 					<fieldset>
-						<legend>Amount of days</legend>
+						<legend><fmt:message key="amountOfDays"/></legend>
 						<input type="text" name="rentalTerm" value="1" required />
 					</fieldset>
-					<br /> <input type="submit" value="make order">
+					<br /> <input type="submit" value="${makeOrdr}">
 				</form> <%-- CONTENT --%>
 
 			</td>

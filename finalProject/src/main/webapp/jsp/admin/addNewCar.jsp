@@ -3,7 +3,8 @@
 
 <html>
 
-<c:set var="title" value="Add car" scope="page" />
+<fmt:message key="addNewCar" var="newCar" />
+<c:set var="title" value="${newCar}" />
 <%@ include file="/jspf/head.jspf" %>
 
 <body>
@@ -14,46 +15,65 @@
 		<tr>
 			<td class="content center">
 				<%-- CONTENT --%>
-				<h3>Add car</h3>
+				<h3><fmt:message key="addNewCar"/></h3>
 
-				<form id="addNewCar_form" action="${pageContext.request.contextPath}/controller" method="post">
+				<form id="login_form" action="${pageContext.request.contextPath}/controller" method="post">
 					<input type="hidden" name="command" value="addNewCar" />
-					<div>
-						<input name="brand" placeholder="Brand" required>
-					</div>
-					<br>
-					<div>
-						<input name="model" placeholder="Model" required>
-					</div>
-					<br>
-					<div>
+					<fieldset>
+						<legend><fmt:message key="brand"/></legend>
+						<input name="brand" placeholder="Brand" required> <br />
+					</fieldset>
+					<br />
+					<fieldset>
+						<legend><fmt:message key="model"/></legend>
+						<input name="model" placeholder="Model" required> 
+						<br />
+					</fieldset>
+					<br />
+					<fieldset>
+						<legend><fmt:message key="type"/></legend>
 						<input name="type" placeholder="Type" required>
-					</div>
-					<br>
-					<div>
+						<br />
+					</fieldset>
+					<br />
+					<fieldset>
+						<legend><fmt:message key="image"/></legend>
 						<input name="image" placeholder="image" required>
-					</div>
-					<br>
-					<div>
+						<br />
+					</fieldset>
+					<br />
+					<fieldset>
+						<legend><fmt:message key="earOfIssue"/></legend>
 						<input name="earOfIssue" placeholder="Ear of issue" required>
-					</div>
-					<br>
-					<div>
+						<br />
+					</fieldset>
+					<br />
+					<fieldset>
+						<legend><fmt:message key="qualityClass"/></legend>
 						<input name="qualityClass" placeholder="Quality class" required>
-					</div>
-					<br>
-					<div>
+						<br />
+					</fieldset>
+					<br />
+					<fieldset>
+						<legend><fmt:message key="price"/></legend>
 						<input name="price" placeholder="Price" required>
-					</div>	
-					<br>
-					<div>
+						<br />
+					</fieldset>
+					<br />
+					<fieldset>
+						<legend><fmt:message key="rentered"/></legend>
 						<input name="rentered" placeholder="Rentered" required>
-					</div>
-					<br>
-					<div>
+						<br />
+					</fieldset>
+					<br />
+					<fieldset>
+						<legend><fmt:message key="damage"/></legend>
 						<input name="damage" placeholder="Damage" required>
-					</div>
-					<input type="submit" value="Add"><br/>
+						<br />
+					</fieldset>
+					<br />
+					<fmt:message key="add" var = "add"/>
+					<input type="submit" value="${add}"><br/>
 				</form> 
 				
 				<%-- CONTENT --%>

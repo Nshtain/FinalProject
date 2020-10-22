@@ -30,7 +30,7 @@ Style of the main table
 Header style (TD tag in the first top row)
 ***************************************************************/
 #header {
-	background: #AAAAFF;
+	background: #D1B798;
 	padding: 0px;
 }
 
@@ -38,28 +38,49 @@ Header style (TD tag in the first top row)
 Style for the left located head menu (DIV tag at left)
 ***************************************************************/
 #leftHeader {
-	background: #AAAAFF;
+	background: #D1B798;
 	float: left;
 	margin-left: 10px;
 	padding: 2px;
 }
 
 #leftHeader a:link, a:visited {
-   color: white;
    padding: 14px 25px;
    text-align: center;
    text-decoration: none;
    display: inline-block;
+   	font-size:18px;
+}
+
+
+#leftHeader button{
+   padding: 14px 25px;
+   text-align: center;
+   text-decoration: none;
+   display: inline-block;
+   	font-size:17px;
+   	border:0px;
+   	background: none;
+}
+
+#leftHeader button:hover {
+	font-size:17px;
+   background-color: red;
 }
 
 #leftHeader a:hover, a:active {
+	font-size:18px;
    background-color: red;
+}
+
+#leftHeader a{
+   color: black;
 }
 /***************************************************************
 Style for the right located head menu (DIV tag at right)
 ***************************************************************/
 #rightHeader {
-	background: #AAAAFF;
+	background: #D1B798;
 	float: right;
 	text-align: right;
 	margin-right: 10px;
@@ -67,14 +88,33 @@ Style for the right located head menu (DIV tag at right)
 }
 
 #rightHeader a:link, a:visited {
-   color: white;
    padding: 14px 25px;
    text-align: center;
    text-decoration: none;
    display: inline-block;
+   font-size:18px;
 }
 
 #rightHeader a:hover, a:active {
+   background-color: red;
+   
+}
+#rightHeader a{
+   color: black;
+}
+
+#rightHeader button{
+   padding: 14px 25px;
+   text-align: center;
+   text-decoration: none;
+   display: inline-block;
+   	font-size:17px;
+   	border:0px;
+   	background: none;
+}
+
+#rightHeader button:hover {
+	font-size:17px;
    background-color: red;
 }
 /***************************************************************
@@ -82,7 +122,7 @@ Content styles (TD tag in the main middle row)
 ***************************************************************/
 .content {
 	height: 100%;
-	background: #BBBBFF;
+	background: #FDF4E3;
 	padding-left: 10px;
 	padding-right: 10px;
 	padding-top: 10px;
@@ -95,7 +135,7 @@ Footer style (TD tag in the last bottom row)
 ***************************************************************/
 #footer {
 	text-align: center;
-	background: #AAAAFF;
+	background: #D1B798;
 }
 
 /***************************************************************
@@ -200,22 +240,21 @@ List order table (list_order.jsp)
 	margin-right: auto;
 }
 
-#list_order_table td {
+#list_order_table tr>td{
 	border:0px;
-	padding: 10px 20px;
-	min-width: 100px;
+	width: 150px;
 	text-align: center;
 }
 
-#list_order_table th {
-	padding: 10px 20px;
-	min-width: 100px;
+#list_order_table tr>th{
+	width: 150px;
 	text-align: center;
 }
 #list_order_table input {
 	max-width: 100px;
-	text-align: left;
+	text-align: center;
 	height:40px;
+	font-size: 12px;
 }
 
 #filters {
@@ -310,7 +349,7 @@ img {
 }
 
 .card a:link, a:visited {
-   color: white;
+   color: black;
    padding: 14px 25px;
    text-align: center;
    text-decoration: none;
@@ -344,8 +383,8 @@ ul.pagination li a {
 
 /* Стиль Выпадающей Кнопки */
 .dropbtn {
-    background-color: #ff80c0;
-    color: white;
+    background-color: #D1B798;
+    color: black;
     padding: 16px;
     font-size: 16px;
     border: none;
@@ -389,4 +428,24 @@ ul.pagination li a {
 /* Изменить цвет фона выпадающего кнопка при отображении выпадающего списка */
 .dropdown:hover .dropbtn {
     background-color: #3e8e41;
+}
+
+.select {
+    position: relative;
+}
+
+.select select {
+    display: block;
+    text-align: center;
+    width: 100%; /* от ширины блока div */
+    padding: .75rem 2.5rem .75rem 1rem;/* отступы от текста до рамки */
+    background: none; /* убираем фон */
+    border: 1px solid #ccc; /* рамка */
+    border-radius: 3px;/* скругление полей формы */
+    -webkit-appearance: none;/* Chrome */
+    -moz-appearance: none;/* Firefox */
+    appearance: none;/* убираем дефолнтные стрелочки */
+    font-family: inherit;/* наследует от родителя */
+    font-size: 1rem;
+    color: black;
 }

@@ -6,7 +6,8 @@
 
 <html>
 
-<c:set var="title" value="Bill" scope="page" />
+<fmt:message key="bill" var="bil" />
+<c:set var="title" value="${bil}" />
 <%@ include file="/jspf/head.jspf"%>
 
 <body>
@@ -24,8 +25,8 @@
 					<table id="list_order_table">
 						<tr>
 							<td>#</td>
-							<td>contract id</td>
-							<td>total price</td>
+							<td><fmt:message key="contract"/></td>
+							<td><fmt:message key="totalPrice"/></td>
 						</tr>
 						<tr>
 							<td>1</td>
@@ -34,7 +35,9 @@
 						</tr>
 						<tr>
 							<td></td>
-							<td><input type="submit" value="pay" /></td>
+							<fmt:message key="pay" var="pay" />
+							
+							<td><input type="submit" value="${pay}" /></td>
 							<td></td>
 						</tr>
 					</table>

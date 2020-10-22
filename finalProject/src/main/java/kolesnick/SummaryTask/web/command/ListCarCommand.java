@@ -9,6 +9,8 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import kolesnick.SummaryTask.Path;
@@ -32,7 +34,7 @@ public class ListCarCommand extends Command {
 		LOG.debug("Command starts");
 
 		// get cars list
-
+		HttpSession session = request.getSession();
 		DBManager manager = DBManager.getInstance();
 		List<Car> cars = manager.findCars();
 		LOG.trace("Found in DB: carsList --> " + cars);
@@ -80,11 +82,11 @@ public class ListCarCommand extends Command {
 		if (request.getParameter("page") != null) {
 			page = Integer.parseInt(request.getParameter("page")) - 1;
 		}
-		request.setAttribute("page", page);
+		session.setAttribute("page", page);
 
 		// put car list to the request
-		request.setAttribute("cars", cars);
-		LOG.trace("Set the request attribute: cars --> " + cars);
+		session.setAttribute("cars", cars);
+		LOG.trace("Set the session attribute: cars --> " + cars);
 
 		LOG.debug("Command finished");
 		return Path.PAGE_LIST_CARS;
