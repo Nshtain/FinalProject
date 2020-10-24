@@ -46,12 +46,13 @@ INSERT INTO `kolesnick_db`.`user` (`id`, `login`, `password`, `adress`, `user_na
   PRIMARY KEY (`id`),
   UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE);
   
-INSERT INTO `kolesnick_db`.`status` (`id`, `name`, `discription`) VALUES (1, 'waiting_for_payment', NULL);
-INSERT INTO `kolesnick_db`.`status` (`id`, `name`, `discription`) VALUES (2, 'decliened', NULL);
-INSERT INTO `kolesnick_db`.`status` (`id`, `name`, `discription`) VALUES (3, 'paid', NULL);
-INSERT INTO `kolesnick_db`.`status` (`id`, `name`, `discription`) VALUES (4, 'closed', NULL);
-INSERT INTO `kolesnick_db`.`status` (`id`, `name`, `discription`) VALUES (5, 'damage', NULL);
-
+INSERT INTO `kolesnick_db`.`status` (`id`, `name`, `discription`) VALUES (1, 'new', NULL);
+INSERT INTO `kolesnick_db`.`status` (`id`, `name`, `discription`) VALUES (2, 'confirm', NULL);
+INSERT INTO `kolesnick_db`.`status` (`id`, `name`, `discription`) VALUES (3, 'decliened', NULL);
+INSERT INTO `kolesnick_db`.`status` (`id`, `name`, `discription`) VALUES (4, 'paid', NULL);
+INSERT INTO `kolesnick_db`.`status` (`id`, `name`, `discription`) VALUES (5, 'closed', NULL);
+INSERT INTO `kolesnick_db`.`status` (`id`, `name`, `discription`) VALUES (6, 'damage', NULL);
+INSERT INTO `kolesnick_db`.`status` (`id`, `name`, `discription`) VALUES (7, 'paied_damage', NULL);
   
   
   CREATE TABLE IF NOT EXISTS `kolesnick_db`.`car` (
@@ -63,20 +64,20 @@ INSERT INTO `kolesnick_db`.`status` (`id`, `name`, `discription`) VALUES (5, 'da
   `ear_of_issue` int NOT NULL,
   `quality_class` VARCHAR(45)NOT NULL,
   `price` DECIMAL UNSIGNED NOT NULL,
-  `rentered` TINYINT NOT NULL,
-  `damage` INT NOT NULL,
+  `rentered` TINYINT NOT NULL DEFAULT 0,
+  `damage` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`));
   
   INSERT INTO `kolesnick_db`.`car` (`id`, `brand`, `model`, `type`, `image`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (1, 'tesla', 's', 'sport', 'tesla.jpg', 2020, 'elita', 5000, false, 0);
   INSERT INTO `kolesnick_db`.`car` (`id`, `brand`, `model`, `type`, `image`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (2, 'audi', 'a6', 'sport', 'audi.jpg', 2019, 'elita', 4500, false, 0);
   INSERT INTO `kolesnick_db`.`car` (`id`, `brand`, `model`, `type`, `image`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (3, 'bmw', 'x3', 'sport', 'bmw.jpg', 2018, 'elita', 4000, false, 0);
   INSERT INTO `kolesnick_db`.`car` (`id`, `brand`, `model`, `type`, `image`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (4, 'deo', 'lanos', 'sport', 'deo.jpg', 2016, 'elita', 3500, false, 0);
-  INSERT INTO `kolesnick_db`.`car` (`id`, `brand`, `model`, `type`, `image`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (5, 'nissan', 'leaf', 'sport', 'nissan.jpg', 2015, 'elita', 3000, false, 0);
+  INSERT INTO `kolesnick_db`.`car` (`id`, `brand`, `model`, `type`, `image`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (5, 'nissan', 'leaf', 'sport', 'nissan.jpg', 2015, 'norm', 3000, false, 0);
   INSERT INTO `kolesnick_db`.`car` (`id`, `brand`, `model`, `type`, `image`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (6, 'toyota', 'camry', 'sport', 'toyota.jpg', 2014, 'elita', 2500, false, 0);
   INSERT INTO `kolesnick_db`.`car` (`id`, `brand`, `model`, `type`, `image`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (7, 'honda', 'accord', 'sport', 'honda.jpg', 2013, 'elita', 2000, false, 0);
   INSERT INTO `kolesnick_db`.`car` (`id`, `brand`, `model`, `type`, `image`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (8, 'mitsubisi', 'supra', 'sport', 'mitsubishi.jpg', 2012, 'elita', 1500, false, 0);
-  INSERT INTO `kolesnick_db`.`car` (`id`, `brand`, `model`, `type`, `image`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (9, 'ford', 'mustang', 'sport', 'ford.jpg', 2011, 'elita', 1000, false, 0);
-  INSERT INTO `kolesnick_db`.`car` (`id`, `brand`, `model`, `type`, `image`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (10, 'suzuki', 'zuki', 'sport', 'suzuki.jpg', 2010, 'elita', 1200, false, 0);
+  INSERT INTO `kolesnick_db`.`car` (`id`, `brand`, `model`, `type`, `image`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (9, 'ford', 'mustang', 'sport', 'ford.jpg', 2011, 'econom', 1000, false, 0);
+  INSERT INTO `kolesnick_db`.`car` (`id`, `brand`, `model`, `type`, `image`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (10, 'suzuki', 'zuki', 'sport', 'suzuki.jpg', 2010, 'econom', 1200, false, 0);
   INSERT INTO `kolesnick_db`.`car` (`id`, `brand`, `model`, `type`, `image`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (11, 'citroen', 'troen', 'sport', 'sitroen.jpg', 2009, 'elita', 1300, false, 0);
   INSERT INTO `kolesnick_db`.`car` (`id`, `brand`, `model`, `type`, `image`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (12, 'porshe', 'camaro', 'sport', 'porshe.jpg', 2008, 'elita', 5000, false, 0);
   INSERT INTO `kolesnick_db`.`car` (`id`, `brand`, `model`, `type`, `image`, `ear_of_issue`, `quality_class`, `price`, `rentered`, `damage`) VALUES (13, 'mersedes', 's', 'sport', 'mersedes.jpg', 2007, 'elita', 4200, false, 0);

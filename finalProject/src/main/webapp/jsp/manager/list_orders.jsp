@@ -66,7 +66,7 @@
 														<input type="hidden" name="contractId"
 															value="${contract.id}" />
 															<fmt:message key="setDamage" var="setDam"/>
-														<th><input name="damageValue" type="text" placeholder="${setDam}" required/></th>
+														<th><input name="damageValue" type="number" placeholder="${setDam}" required min="0" max="99" title="Damage must be within 0-100%"/></th>
 														<th><button name="damage" value="damage" type="submit"><fmt:message key="damage"/></button>
 														<button name="close" value="close" type="submit"><fmt:message key="close"/></button></th>
 													</c:when>

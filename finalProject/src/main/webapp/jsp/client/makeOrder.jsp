@@ -45,7 +45,7 @@ This is the CONTENT, containing the main part of the page.
 					<br />
 					<fieldset>
 						<legend><fmt:message key="amountOfDays"/></legend>
-						<input type="text" name="rentalTerm" value="1" required />
+						<input type="number" name="rentalTerm" value="1" min="1" max="99" required title="Number must be within 1-99"/>
 					</fieldset>
 					<br /> <input type="submit" value="${makeOrdr}">
 				</form> <%-- CONTENT --%>

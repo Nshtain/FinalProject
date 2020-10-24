@@ -24,45 +24,55 @@
 
 					<fieldset>
 						<legend><fmt:message key="login"/></legend>
-						<input name="login" value="" required> <br />
+						<fmt:message key="titleLog" var="titleLog"/>
+						<input id="login" name="login" required pattern=".{4,16}" title="${titleLog}"/><br />					
 					</fieldset>
 					<br />
 					<fieldset>
 						<legend><fmt:message key="password"/></legend>
-						<input name="password" value="" required> <br />
+						<fmt:message key="titlePas" var="titlePas"/>
+						<input type="password" name="password" required pattern=".{4,32}" title="${titlePas}"/><br/>
 					</fieldset>
 					<br />
 					<fieldset>
 						<legend><fmt:message key="firstName"/></legend>
-						<input name="firstname" value="" required> <br />
+						<fmt:message key="titleFirstName" var="titleFirstName"/>
+						<input type="text" name="firstName" required pattern="[A-Za-z\u0400-\u04ff]{2,45}" title="${titleFirstName}"/><br/>
 					</fieldset>
 					<br />
 					<fieldset>
 						<legend><fmt:message key="name"/></legend>
-						<input name="name" value="" required> <br />
+						<fmt:message key="titleName" var="titleName"/>
+						<input type="text" name="name" required pattern="[A-Za-z\u0400-\u04ff]{2,45}" title="${titleName}"/><br/>
 					</fieldset>
 					<br />
 
 					<fieldset>
 						<legend><fmt:message key="lastName"/></legend>
-						<input name="lastname" value="" required> <br />
+						<fmt:message key="titleLastName" var="titleLastName"/>
+						<input type="text" name="lastName" required pattern="[A-Za-z\u0400-\u04ff]{2,45}" title="${titleLastName}"/><br/>
 					</fieldset>
 					<br />
 
 					<fieldset>
 						<legend><fmt:message key="adress"/></legend>
-						<input name="adress" value="" required> <br />
+						<fmt:message key="titleAdress" var="titleAdress"/>
+						<input type="text" name="adress" required pattern="\w{8,255}" title="${titleAdress}"/><br/>
 					</fieldset>
 					<br />
 
 					<fieldset>
 						<legend><fmt:message key="pasport"/></legend>
-						<input name="pasport" value="" required> <br />
+						<fmt:message key="titlePasport" var="titlePasport"/>
+						<input type="text" name="pasport" required pattern="[A-Za-z\u0400-\u04ff]{2}\d{6}" title="${titlePasport}"/>
+						 <br />
 					</fieldset>
 					<br />
 					<fieldset>
 						<legend><fmt:message key="telephone"/></legend>
-						<input name="tel" value="" required> <br />
+						<fmt:message key="titleTel" var="titleTel"/>
+						<input type="tel" name="tel" placeholder="+380123456789" required pattern="+380\d{9}" title="${titleTel}"/>
+						 <br />
 					</fieldset>
 					<br /> <br /> 
 					

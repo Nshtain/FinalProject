@@ -21,55 +21,44 @@
 					<input type="hidden" name="command" value="addNewCar" />
 					<fieldset>
 						<legend><fmt:message key="brand"/></legend>
-						<input name="brand" placeholder="Brand" required> <br />
+						<fmt:message key="titleBrand" var="titleBrand"/>
+						<input type="text" name="brand" placeholder="Brand" required pattern="[A-Za-z\u0400-\u04ff]{2,25}" title="${titleBrand}"/><br />
 					</fieldset>
 					<br />
 					<fieldset>
 						<legend><fmt:message key="model"/></legend>
-						<input name="model" placeholder="Model" required> 
-						<br />
+						<fmt:message key="titleModel" var="titleModel"/>
+						<input type="text" name="model" placeholder="Model" required pattern="[\w\u0400-\u04ff]{1,25}" title="${titleModel}"/><br />
 					</fieldset>
 					<br />
 					<fieldset>
 						<legend><fmt:message key="type"/></legend>
-						<input name="type" placeholder="Type" required>
-						<br />
+						<fmt:message key="titleType" var="titleType"/>
+						<input type="text" name="type" placeholder="Type" required pattern="[A-Za-z\u0400-\u04ff]{4,45}" title="${titleType}"/><br />
 					</fieldset>
 					<br />
 					<fieldset>
 						<legend><fmt:message key="image"/></legend>
-						<input name="image" placeholder="image" required>
-						<br />
+						<fmt:message key="titleImage" var="titleImage"/>
+						<input type="text" name="image" placeholder="Image" required pattern="[\w\u0400-\u04ff]+.[a-z]+" maxlength="45" title="${titleImage}"/><br />
 					</fieldset>
 					<br />
 					<fieldset>
 						<legend><fmt:message key="earOfIssue"/></legend>
-						<input name="earOfIssue" placeholder="Ear of issue" required>
-						<br />
+						<fmt:message key="titleEarOfIssue" var="titleEarOfIssue"/>
+						<input type="number" name="earOfIssue" placeholder="Ear of issue" required min="1800" max="2020" title="${titleEarOfIssue}"/><br />
 					</fieldset>
 					<br />
 					<fieldset>
 						<legend><fmt:message key="qualityClass"/></legend>
-						<input name="qualityClass" placeholder="Quality class" required>
-						<br />
+						<fmt:message key="titleQualityClass" var="titleQualityClass"/>
+						<input type="text" name="qualityClass" placeholder="Quality class" required pattern="[A-Za-z\u0400-\u04ff]{3,45}" title="${titleQualityClass}"/><br />
 					</fieldset>
 					<br />
 					<fieldset>
 						<legend><fmt:message key="price"/></legend>
-						<input name="price" placeholder="Price" required>
-						<br />
-					</fieldset>
-					<br />
-					<fieldset>
-						<legend><fmt:message key="rentered"/></legend>
-						<input name="rentered" placeholder="Rentered" required>
-						<br />
-					</fieldset>
-					<br />
-					<fieldset>
-						<legend><fmt:message key="damage"/></legend>
-						<input name="damage" placeholder="Damage" required>
-						<br />
+						<fmt:message key="titlePrice" var="titlePrice"/>
+						<input type="number" name="price" placeholder="Price" required min="100" max="9000" title="${titlePrice}"/><br />
 					</fieldset>
 					<br />
 					<fmt:message key="add" var = "add"/>

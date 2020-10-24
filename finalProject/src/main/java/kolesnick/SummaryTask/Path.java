@@ -7,8 +7,8 @@ public final class Path {
 
 	// pages
 	public static final String PAGE_LOGIN = "/login.jsp";
-	public static final String PAGE_ERROR_PAGE = "/jsp/error_page.jsp";
-	public static final String PAGE_LIST_CARS = "/jsp/client/list_cars.jsp";
+	public static final String PAGE_ERROR_PAGE = "/error_page.jsp";
+	public static final String PAGE_LIST_CARS = "/list_cars.jsp";
 	public static final String PAGE_LIST_ORDERS = "/jsp/manager/list_orders.jsp";
 	public static final String PAGE_CREATE_CAR = "/jsp/admin/addNewCar.jsp";
 	public static final String PAGE_REGISTRATION = "/jsp/client/registration.jsp";

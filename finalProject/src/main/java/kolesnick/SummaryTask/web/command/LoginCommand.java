@@ -9,11 +9,14 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.message.Message;
+
 import kolesnick.SummaryTask.Path;
 import kolesnick.SummaryTask.db.DBManager;
 import kolesnick.SummaryTask.db.Role;
 import kolesnick.SummaryTask.db.entity.User;
 import kolesnick.SummaryTask.exception.DBException;
+import kolesnick.SummaryTask.exception.Messages;
 
 /**
  * Login command.
@@ -37,7 +40,16 @@ public class LoginCommand extends Command {
 		LOG.trace("Request parameter: login --> " + login);
 
 		String password = request.getParameter("password");
-
+		
+		if (login.length() < 4 && login.length() > 16) {
+			LOG.trace(Messages.ERR_LOGGIN_OUT_OF_BOUNDS + ": " + login);
+			throw new DBException(Messages.ERR_LOGGIN_OUT_OF_BOUNDS);
+		}
+		if (password.length() < 4 && password.length() > 32) {
+			LOG.trace(Messages.ERR_PASSWORD_OUT_OF_BOUNDS + ": " + password);
+			throw new DBException(Messages.ERR_PASSWORD_OUT_OF_BOUNDS);
+		}
+		
 		if (request.getParameter("newAcc") != null) {
 			LOG.trace("Try to create a new acc");
 

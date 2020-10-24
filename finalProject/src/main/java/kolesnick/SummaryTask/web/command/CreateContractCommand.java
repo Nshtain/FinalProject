@@ -16,6 +16,7 @@ import kolesnick.SummaryTask.db.Status;
 import kolesnick.SummaryTask.db.entity.Contract;
 import kolesnick.SummaryTask.db.entity.User;
 import kolesnick.SummaryTask.exception.DBException;
+import kolesnick.SummaryTask.exception.Messages;
 
 public class CreateContractCommand extends Command {
 
@@ -33,8 +34,12 @@ public class CreateContractCommand extends Command {
 		User user = (User) session.getAttribute("user");
 
 		Contract contract = new Contract();
-
-		contract.setRentalTerm(Integer.parseInt(request.getParameter("rentalTerm")));
+		String rentalTermString = request.getParameter("rentalTerm");
+		if (rentalTermString.length() < 1 && rentalTermString.length() > 2) {
+			LOG.trace(Messages.ERR_RENTAL_TERM_OUT_OF_BOUNDS + ": " + rentalTermString);
+			throw new DBException(Messages.ERR_RENTAL_TERM_OUT_OF_BOUNDS);
+		}
+		contract.setRentalTerm(Integer.parseInt(rentalTermString));
 		contract.setWithDriver(Boolean.parseBoolean(request.getParameter("driver")));
 		contract.setCarId(Integer.parseInt((String) (session.getAttribute("carId"))));
 		contract.setUserId(user.getId());

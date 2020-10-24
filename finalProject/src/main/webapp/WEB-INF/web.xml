@@ -66,7 +66,7 @@
 		</init-param>
 		<init-param>
 			<param-name>common</param-name>
-			<param-value>logout noCommand viewSettings</param-value>
+			<param-value>logout</param-value>
 		</init-param>
 		<init-param>
 			<param-name>out-of-control</param-name>
@@ -78,6 +78,18 @@
 		<filter-name>CommandAccessFilter</filter-name>
 		<servlet-name>Controller</servlet-name>
 	</filter-mapping>
+
+
+	<filter>
+		<filter-name>SecurityFilter</filter-name>
+		<filter-class>kolesnick.SummaryTask.web.filter.SecurityFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>SecurityFilter</filter-name>
+		<url-pattern>/jsp/*</url-pattern>
+	</filter-mapping>
+
 
 	<!--============================================================ Context 
 		listener ============================================================= -->

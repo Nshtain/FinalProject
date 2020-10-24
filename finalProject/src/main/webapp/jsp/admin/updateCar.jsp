@@ -24,57 +24,53 @@
 					<input type="hidden" name="carId" value="${car.id}" />
 					<fieldset>
 						<legend><fmt:message key="brand"/></legend>
-						<input name="brand" placeholder="Brand" value="${car.brand}" required> <br />
+						<fmt:message key="titleBrand" var="titleBrand"/>
+						<input name="brand" placeholder="Brand" value="${car.brand}" required pattern="[A-Za-z\u0400-\u04ff]{2,25}" title="${titleBrand}"> <br />
 					</fieldset>
 					<br />
 					<fieldset>
 						<legend><fmt:message key="model"/></legend>
-						<input name="model" placeholder="Model" value="${car.model}" required> 
+						<fmt:message key="titleModel" var="titleModel"/>
+						<input name="model" placeholder="Model" value="${car.model}" required pattern="[\w\u0400-\u04ff]{1,25}" title="${titleModel}"> 
 						<br />
 					</fieldset>
 					<br />
 					<fieldset>
 						<legend><fmt:message key="type"/></legend>
-						<input name="type" placeholder="Type" value="${car.type}" required>
+						<fmt:message key="titleType" var="titleType"/>
+						<input name="type" placeholder="Type" value="${car.type}" required pattern="[A-Za-z\u0400-\u04ff]{4,45}" title="${titleType}">
 						<br />
 					</fieldset>
 					<br />
 					<fieldset>
 						<legend><fmt:message key="image"/></legend>
-						<input name="image" placeholder="image" value="${car.image}" required>
+						<fmt:message key="titleImage" var="titleImage"/>
+						<input name="image" placeholder="image" value="${car.image}" required pattern="[\w\u0400-\u04ff]+.[a-z]+" maxlength="45" title="${titleImage}">
 						<br />
 					</fieldset>
 					<br />
 					<fieldset>
 						<legend><fmt:message key="earOfIssue"/></legend>
-						<input name="earOfIssue" placeholder="Ear of issue" value="${car.earOfIssue}" required>
+						<fmt:message key="titleEarOfIssue" var="titleEarOfIssue"/>
+						<input name="earOfIssue" placeholder="Ear of issue" value="${car.earOfIssue}" required min="1800" max="2020" title="${titleEarOfIssue}">
 						<br />
 					</fieldset>
 					<br />
 					<fieldset>
 						<legend><fmt:message key="qualityClass"/></legend>
-						<input name="qualityClass" placeholder="Quality class" value="${car.qualityClass}" required>
+						<fmt:message key="titleQualityClass" var="titleQualityClass"/>
+						<input name="qualityClass" placeholder="Quality class" value="${car.qualityClass}" required pattern="[A-Za-z\u0400-\u04ff]{3,45}" title="${titleQualityClass}">
 						<br />
 					</fieldset>
 					<br />
 					<fieldset>
 						<legend><fmt:message key="price"/></legend>
-						<input name="price" placeholder="Price" value="${car.price}" required>
+					    <fmt:message key="titlePrice" var="titlePrice"/>
+						<input name="price" placeholder="Price" value="${car.price}" required min="100" max="9000" title="${titlePrice}">
 						<br />
 					</fieldset>
 					<br />
-					<fieldset>
-						<legend><fmt:message key="rentered"/></legend>
-						<input name="rentered" placeholder="Rentered" value="${car.rentered}" required>
-						<br />
-					</fieldset>
-					<br />
-					<fieldset>
-						<legend><fmt:message key="damage"/></legend>
-						<input name="damage" placeholder="Damage" value="${car.damage}" required>
-						<br />
-					</fieldset>
-					<br /><fmt:message key="update" var="update" />
+					<fmt:message key="update" var="update" />
 					<input type="submit" value="${update}"><br/>
 					</form> 
 				

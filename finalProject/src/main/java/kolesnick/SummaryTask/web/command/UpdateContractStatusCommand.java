@@ -15,6 +15,7 @@ import kolesnick.SummaryTask.db.Status;
 import kolesnick.SummaryTask.db.entity.Car;
 import kolesnick.SummaryTask.db.entity.Contract;
 import kolesnick.SummaryTask.exception.DBException;
+import kolesnick.SummaryTask.exception.Messages;
 
 public class UpdateContractStatusCommand extends Command {
 
@@ -45,17 +46,28 @@ public class UpdateContractStatusCommand extends Command {
 		if (request.getParameter("confirm") != null) {
 			status = Status.CONFIRMED;
 		}
-		if (request.getParameter("damage") != null) {
-			status = Status.DAMAGE;
-			car.setDamage(Integer.parseInt(request.getParameter("damageValue")));
-			manager.updateCar(car);
+		
+		String damageString = request.getParameter("damageValue");
+		if (damageString.length() < 1 && damageString.length() > 2) {
+			LOG.trace(Messages.ERR_DAMAGE_OUT_OF_BOUNDS + ": " + damageString);
+			throw new DBException(Messages.ERR_DAMAGE_OUT_OF_BOUNDS);
 		}
-
-		if (request.getParameter("close") != null) {
-			status = Status.CLOSED;
-			car.setDamage(0);
-			manager.updateCar(car);
+		
+		int damage = Integer.parseInt(damageString);
+		if (damage > 0) {
+			if (request.getParameter("damage") != null) {
+				status = Status.DAMAGE;
+				car.setDamage(damage);
+				manager.updateCar(car);
+			}	
+		}else {
+			if (request.getParameter("close") != null) {
+				status = Status.CLOSED;
+				car.setDamage(damage);
+				manager.updateCar(car);
+			}			
 		}
+		
 
 		if (manager.updateContractStatus(status, contract.getId())) {
 			LOG.trace("Update contract status. contract -->" + contract);

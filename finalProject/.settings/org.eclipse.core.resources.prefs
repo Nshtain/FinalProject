@@ -1,4 +1,10 @@
 eclipse.preferences.version=1
 encoding//src/main/java=UTF-8
+encoding//src/main/webapp/jsp/admin/addManager.jsp=UTF-8
+encoding//src/main/webapp/jsp/admin/addNewCar.jsp=UTF-8
+encoding//src/main/webapp/jsp/admin/updateCar.jsp=UTF-8
+encoding//src/main/webapp/jsp/client/registration.jsp=UTF-8
+encoding//src/main/webapp/jspf/head.jspf=UTF-8
+encoding//src/main/webapp/login.jsp=UTF-8
 encoding//src/test/java=UTF-8
 encoding/<project>=UTF-8
