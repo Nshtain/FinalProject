@@ -52,7 +52,7 @@
 					<fieldset>
 						<legend><fmt:message key="earOfIssue"/></legend>
 						<fmt:message key="titleEarOfIssue" var="titleEarOfIssue"/>
-						<input name="earOfIssue" placeholder="Ear of issue" value="${car.earOfIssue}" required min="1800" max="2020" title="${titleEarOfIssue}">
+						<input type="number" name="earOfIssue" placeholder="Ear of issue" value="${car.earOfIssue}" required min="1800" max="2020" title="${titleEarOfIssue}">
 						<br />
 					</fieldset>
 					<br />
@@ -66,7 +66,7 @@
 					<fieldset>
 						<legend><fmt:message key="price"/></legend>
 					    <fmt:message key="titlePrice" var="titlePrice"/>
-						<input name="price" placeholder="Price" value="${car.price}" required min="100" max="9000" title="${titlePrice}">
+						<input type="number" name="price" placeholder="Price" value="${car.price}" required min="100" max="9000" title="${titlePrice}">
 						<br />
 					</fieldset>
 					<br />

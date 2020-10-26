@@ -27,7 +27,7 @@ import kolesnick.SummaryTask.db.entity.User;
 import kolesnick.SummaryTask.exception.DBException;
 import kolesnick.SummaryTask.exception.Messages;
 
-public final class DBManager {
+public  class DBManager {
 
 	private static final Logger LOG = LogManager.getLogger(DBManager.class);
 

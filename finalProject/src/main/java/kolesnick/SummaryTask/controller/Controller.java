@@ -24,7 +24,7 @@ public class Controller extends HttpServlet {
 
 	private static final Logger LOG = LogManager.getLogger(Controller.class);
 	
-	protected void doGet(HttpServletRequest request,
+	public void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		
 		LOG.debug("Controller starts");
@@ -52,7 +52,7 @@ public class Controller extends HttpServlet {
 		request.getRequestDispatcher(forward).forward(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request,
+	public void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		
 		LOG.debug("Controller starts");
