@@ -29,6 +29,7 @@
 									<td><fmt:message key="name"/></td>
 									<td><fmt:message key="lastName"/></td>
 									<td><fmt:message key="status"/></td>
+									<td><fmt:message key="countContracts"/></td>
 								</tr>
 							</table>
 						</td>
@@ -61,6 +62,7 @@
 														<input type="submit" value="${block}" />							
 													</c:otherwise>
 												</c:choose></td>
+											<td>${map.get(client)}</td>
 										</tr>
 									</table>
 								</form>

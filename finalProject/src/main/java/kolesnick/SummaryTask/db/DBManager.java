@@ -825,5 +825,4 @@ public  class DBManager {
 		car.setDamage(rs.getInt(Fields.CAR_DAMAGE));
 		return car;
 	}
-
 }

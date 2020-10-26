@@ -67,7 +67,7 @@
 												<c:when test="${userRole.name == 'admin'}">
 													<c:set var="cars" value="${cars}" scope="session" />
 													<a href="${pageContext.request.contextPath}/jsp/admin/updateCar.jsp?i=${i}"><fmt:message key="update"/></a>
-													<a href="?command=deleteCar&carId=${cars[i].id}"><fmt:message key="delete"/></a>
+													<a href="${pageContext.request.contextPath}/controller?command=deleteCar&carId=${cars[i].id}"><fmt:message key="delete"/></a>
 												</c:when>
 												<c:otherwise>
 													<input type="hidden" name="carId" value="${cars[i].id}" />

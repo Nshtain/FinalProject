@@ -48,25 +48,33 @@ public class UpdateContractStatusCommand extends Command {
 		}
 		
 		String damageString = request.getParameter("damageValue");
-		if (damageString.length() < 1 && damageString.length() > 2) {
-			LOG.trace(Messages.ERR_DAMAGE_OUT_OF_BOUNDS + ": " + damageString);
-			throw new DBException(Messages.ERR_DAMAGE_OUT_OF_BOUNDS);
+		if (damageString != null) {
+			if (damageString.length() < 1 && damageString.length() > 2) {
+				LOG.trace(Messages.ERR_DAMAGE_OUT_OF_BOUNDS + ": " + damageString);
+				throw new DBException(Messages.ERR_DAMAGE_OUT_OF_BOUNDS);
+			}
+			
+			int damage = Integer.parseInt(damageString);
+			if (damage > 0) {
+				if (request.getParameter("damage") != null) {
+					status = Status.DAMAGE;
+					car.setDamage(damage);
+					manager.updateCar(car);
+				}	
+			}else {
+				if (request.getParameter("close") != null) {
+					status = Status.CLOSED;
+					car.setDamage(damage);
+					manager.updateCar(car);
+				}			
+			}
 		}
 		
-		int damage = Integer.parseInt(damageString);
-		if (damage > 0) {
-			if (request.getParameter("damage") != null) {
-				status = Status.DAMAGE;
-				car.setDamage(damage);
-				manager.updateCar(car);
-			}	
-		}else {
-			if (request.getParameter("close") != null) {
-				status = Status.CLOSED;
-				car.setDamage(damage);
-				manager.updateCar(car);
-			}			
-		}
+		if (request.getParameter("close") != null) {
+			status = Status.CLOSED;
+			car.setDamage(0);
+			manager.updateCar(car);
+		}	
 		
 
 		if (manager.updateContractStatus(status, contract.getId())) {

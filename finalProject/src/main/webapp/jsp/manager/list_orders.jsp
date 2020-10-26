@@ -43,7 +43,7 @@
 						<c:set var="k" value="${k+1}" />
 						<tr>
 							<td>
-								<form id="contracts" action="controller" method="post">
+								<form id="contracts" action="${pageContext.request.contextPath}/controller" method="post">
 									<input type="hidden" name="command" value="updateContractStatus" />
 									<table id="list_order_table">
 										<tr>
