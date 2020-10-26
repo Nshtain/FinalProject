@@ -37,7 +37,7 @@
 					<fieldset>
 						<legend><fmt:message key="firstName"/></legend>
 						<fmt:message key="titleFirstName" var="titleFirstName"/>
-						<input type="text" name="firstName" required pattern="[A-Za-z\u0400-\u04ff]{2,45}" title="${titleFirstName}"/><br/>
+						<input type="text" name="firstname" required pattern="[A-Za-z\u0400-\u04ff]{2,45}" title="${titleFirstName}"/><br/>
 					</fieldset>
 					<br />
 					<fieldset>
@@ -50,14 +50,14 @@
 					<fieldset>
 						<legend><fmt:message key="lastName"/></legend>
 						<fmt:message key="titleLastName" var="titleLastName"/>
-						<input type="text" name="lastName" required pattern="[A-Za-z\u0400-\u04ff]{2,45}" title="${titleLastName}"/><br/>
+						<input type="text" name="lastname" required pattern="[A-Za-z\u0400-\u04ff]{2,45}" title="${titleLastName}"/><br/>
 					</fieldset>
 					<br />
 
 					<fieldset>
 						<legend><fmt:message key="adress"/></legend>
 						<fmt:message key="titleAdress" var="titleAdress"/>
-						<input type="text" name="adress" required pattern="\w{8,255}" title="${titleAdress}"/><br/>
+						<input type="text" name="adress" required pattern="[\w\u0400-\u04ff]{8,255}" title="${titleAdress}"/><br/>
 					</fieldset>
 					<br />
 
@@ -71,7 +71,7 @@
 					<fieldset>
 						<legend><fmt:message key="telephone"/></legend>
 						<fmt:message key="titleTel" var="titleTel"/>
-						<input type="tel" name="tel" placeholder="+380123456789" required pattern="+380\d{9}" title="${titleTel}"/>
+						<input type="text" name="tel" placeholder="1234567" required pattern="\d{7}" title="${titleTel}"/>
 						 <br />
 					</fieldset>
 					<br /> <br /> 

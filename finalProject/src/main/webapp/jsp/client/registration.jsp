@@ -73,10 +73,10 @@
 						<fmt:message key="titleAdress" var="titleAdress"/>
 						<c:choose>
 							<c:when test="${user.adress == null}">
-								 <input name="adress" value="" required pattern="\w{8,255}" title="${titleAdress}">
+								 <input name="adress" value="" required pattern="[\w\u0400-\u04ff]{8,255}" title="${titleAdress}">
 							</c:when>
 							<c:when test="${user.adress != null}">
-								<input name="adress" value="${user.adress}" required pattern="\w{8,255}" title="${titleAdress}">
+								<input name="adress" value="${user.adress}" required pattern="[\w\u0400-\u04ff]{8,255}" title="${titleAdress}">
 							</c:when>
 						</c:choose>
 						<br />
@@ -102,10 +102,10 @@
 						<fmt:message key="titleTel" var="titleTel"/>
 						<c:choose>
 							<c:when test="${user.tel == null}">
-								 <input name="tel" value="" required pattern="+380\d{9}" title="${titleTel}">
+								 <input name="tel" value="" required pattern="\d{7}" title="${titleTel}">
 							</c:when>
 							<c:when test="${user.tel != null}">
-								 <input name="tel" value="${user.tel}" required pattern="+380\d{9}" title="${titleTel}">
+								 <input name="tel" value="${user.tel}" required pattern="\d{7}" title="${titleTel}">
 							</c:when>
 						</c:choose>
 						<br />

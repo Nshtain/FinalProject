@@ -53,7 +53,7 @@ public class RegistrationCommand extends Command {
 			LOG.trace(Messages.ERR_PASSPORT_OUT_OF_BOUNDS + ": " + pasport);
 			throw new DBException(Messages.ERR_PASSPORT_OUT_OF_BOUNDS);
 		}
-		if (tel.length() != 13) {
+		if (tel.length() != 7) {
 			LOG.trace(Messages.ERR_TELEPHONE_OUT_OF_BOUNDS + ": " + tel);
 			throw new DBException(Messages.ERR_TELEPHONE_OUT_OF_BOUNDS);
 		}
